@@ -1,0 +1,943 @@
+[gd_scene format=4 uid="uid://d5mcvefojdiw"]
+
+[ext_resource type="Texture2D" uid="uid://cp1wfulrmcaqm" path="res://Assets/Textures/Brick_Texture.png" id="1_8j60k"]
+[ext_resource type="PackedScene" uid="uid://ctu0ijhkofc6e" path="res://Scenes/player.tscn" id="1_a02cp"]
+[ext_resource type="PackedScene" uid="uid://dflx15h0xquuc" path="res://Assets/Textures/gridmap_a.glb" id="2_go701"]
+[ext_resource type="Texture2D" uid="uid://dv2mjae4k8jno" path="res://Assets/Textures/gridmap_a_tex_prototype_map.png" id="3_5a7ea"]
+[ext_resource type="PackedScene" uid="uid://bms8is17u8noy" path="res://Scenes/Enemy.tscn" id="5_fo5ed"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_fo5ed"]
+vertices = PackedVector3Array(-19.5, 0.5, -19.5, -19.5, 0.5, 19.5, 19.5, 0.5, 19.5, 19.5, 0.5, -19.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yp4wr"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fo5ed"]
+albedo_texture = ExtResource("1_8j60k")
+uv1_scale = Vector3(4, 4, 4)
+
+[sub_resource type="QuadMesh" id="QuadMesh_go701"]
+size = Vector2(40, 40)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j1yuq"]
+resource_name = "mat_prototype_map"
+transparency = 4
+cull_mode = 2
+albedo_texture = ExtResource("3_5a7ea")
+roughness = 0.5
+texture_filter = 2
+metadata/extras = {
+"vrm_addon_extension": {
+"mtoon1": {
+"emissive_texture": {},
+"extensions": {
+"vrmc_materials_mtoon": {
+"matcap_texture": {},
+"outline_width_multiply_texture": {},
+"rim_multiply_texture": {},
+"shade_multiply_texture": {},
+"shading_shift_texture": {},
+"uv_animation_mask_texture": {}
+}
+},
+"normal_texture": {},
+"pbr_metallic_roughness": {
+"base_color_texture": {}
+}
+}
+}
+}
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_pkwu0"]
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2, 0.25, 2),
+"format": 34896613377,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAgABAAQAAwAEAAEABQAAAAIABQADAAAAAgAEAAYABQACAAYAAwAHAAQABQAHAAMABwAGAAQABwAFAAYA"),
+"name": "mat_prototype_map",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//8AAAAAAAD///////8AAP////8AAAAA//8AAP//AAAAAP////8AAAAAAAAAAAAAAAD//wAAAAAAAAAA//8AAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_3dqyf"]
+resource_name = "gridmap_a_wooden plat1-col"
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2, 0.25, 2),
+"attribute_data": PackedByteArray("////z6qq/7////+/qqr/z////7+qqv+v////r6qq/7+qqv+/////r6qq/6////+/qqr/z////7+qqv+/////z///AACqqv8PqqoAAP///w/////Pqqr///////+qqv/P"),
+"format": 34896613399,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUA"),
+"material": SubResource("StandardMaterial3D_j1yuq"),
+"name": "mat_prototype_map",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("//8AAAAA/7//////////v/////8AAP+///8AAP///7///wAA//8AgAAA/////wCA////////AIAAAAAA//8AgAAAAAAAAAAA/////wAAAAAAAP//AAAAAP//AAAAAAAAAAAAAP//AAAAAP//AAAAAAAA/////wAAAAAAAAAAAAD/////AAD/vwAA//////+/AAD//wAA/7//////////vwAAAAAAAKoq//8AAP//qir//wAAAACqKgAAAAD//6oq/38AAP9/AAD/fwAA/38AAP9/////f////3////9///////9/////f////3////9//z//f/8//3//P/9//z//f////3////9/////f////39UVVRVVFVUVVRVVFVUVVRV")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_pkwu0")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_b8mmp"]
+data = PackedVector3Array(1, 0, -1, 1, 0.25, 1, 1, 0.25, -1, 1, 0, -1, 1, 0, 1, 1, 0.25, 1, 1, 0, 1, -1, 0.25, 1, 1, 0.25, 1, 1, 0, 1, -1, 0, 1, -1, 0.25, 1, -1, 0, -1, 1, 0.25, -1, -1, 0.25, -1, -1, 0, -1, 1, 0, -1, 1, 0.25, -1, -1, 0, 1, -1, 0.25, -1, -1, 0.25, 1, -1, 0, 1, -1, 0, -1, -1, 0.25, -1, 1, 0.25, -1, -1, 0.25, 1, -1, 0.25, -1, 1, 0.25, -1, 1, 0.25, 1, -1, 0.25, 1, -1, 0, -1, 1, 0, 1, 1, 0, -1, -1, 0, -1, -1, 0, 1, 1, 0, 1)
+
+[node name="World" type="Node3D" unique_id=1094893762]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=546032214]
+transform = Transform3D(0.81403166, 0.5310083, -0.23533542, 0.19368804, 0.13380814, 0.9718952, 0.5475742, -0.8367351, 0.006074103, 0, 21.492619, 0)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=66906496]
+navigation_mesh = SubResource("NavigationMesh_fo5ed")
+
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1275906443]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor" unique_id=321729480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_yp4wr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Floor" unique_id=1810021605]
+material_override = SubResource("StandardMaterial3D_fo5ed")
+mesh = SubResource("QuadMesh_go701")
+
+[node name="Player" parent="." unique_id=391161488 instance=ExtResource("1_a02cp")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.1032283, 0)
+
+[node name="Enemy" parent="." unique_id=378547284 instance=ExtResource("5_fo5ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.75052, 1.0000019, -15.583345)
+
+[node name="Placeholders" parent="." unique_id=967226793 instance=ExtResource("2_go701")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4775448, 0, 15.574497)
+
+[node name="cube 2x4" parent="Placeholders" index="0" unique_id=1764977782]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -21.5)
+layers = 2
+
+[node name="ramp 2x2" parent="Placeholders" index="2" unique_id=135478100]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.8415885, 0, -21.535624)
+layers = 2
+
+[node name="cube 2x2" parent="Placeholders" index="4" unique_id=1115535585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.379445, 0, -21.52068)
+layers = 2
+
+[node name="cube 4x4" parent="Placeholders" index="5" unique_id=1093943039]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, -21.670221)
+layers = 2
+
+[node name="cube 1x2" parent="Placeholders" index="6" unique_id=1204825063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.907352, 1.9032724, -20.487623)
+layers = 2
+
+[node name="wooden wall" parent="Placeholders" index="9" unique_id=383479183]
+layers = 2
+
+[node name="wooden door" parent="Placeholders" index="12" unique_id=1070323048]
+layers = 2
+
+[node name="wooden window" parent="Placeholders" index="13" unique_id=496242151]
+layers = 2
+
+[node name="wooden plat1" parent="Placeholders" index="14" unique_id=811777786]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 17.52017, 1, -35.3638)
+
+[node name="wooden wall2" parent="Placeholders" index="18" unique_id=320184580]
+layers = 2
+
+[node name="wall 2x1corner" parent="Placeholders" index="19" unique_id=721167818]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.9169407, 2.0250416, -21.5)
+layers = 2
+
+[node name="cylinder 2x2" parent="Placeholders" index="20" unique_id=964691028]
+layers = 2
+
+[node name="cylinder 4x4" parent="Placeholders" index="21" unique_id=80852279]
+layers = 2
+
+[node name="wooden plat2" type="MeshInstance3D" parent="Placeholders" unique_id=1589466346]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 15.537773, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat2" unique_id=1429775112]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat2/StaticBody3D" unique_id=991056541]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat3" type="MeshInstance3D" parent="Placeholders" unique_id=1603921447]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 13.52017, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat3" unique_id=369273858]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat3/StaticBody3D" unique_id=562213192]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat4" type="MeshInstance3D" parent="Placeholders" unique_id=511154193]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 11.537773, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat4" unique_id=2144040100]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat4/StaticBody3D" unique_id=1159415024]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat5" type="MeshInstance3D" parent="Placeholders" unique_id=2044286248]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 9.52017, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat5" unique_id=1383957354]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat5/StaticBody3D" unique_id=686681255]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat6" type="MeshInstance3D" parent="Placeholders" unique_id=1371752511]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 7.537773, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat6" unique_id=1114231472]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat6/StaticBody3D" unique_id=426045478]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat7" type="MeshInstance3D" parent="Placeholders" unique_id=714055611]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 5.52017, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat7" unique_id=2136077215]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat7/StaticBody3D" unique_id=1808719856]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat8" type="MeshInstance3D" parent="Placeholders" unique_id=1274259379]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 3.5377731, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat8" unique_id=1873747298]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat8/StaticBody3D" unique_id=266166098]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat9" type="MeshInstance3D" parent="Placeholders" unique_id=899727813]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 2.5201702, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat9" unique_id=1075810200]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat9/StaticBody3D" unique_id=1675097229]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat10" type="MeshInstance3D" parent="Placeholders" unique_id=332966724]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0.53777313, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat10" unique_id=1622027609]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat10/StaticBody3D" unique_id=62572131]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat11" type="MeshInstance3D" parent="Placeholders" unique_id=1209517683]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -1.4798298, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat11" unique_id=1998369378]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat11/StaticBody3D" unique_id=43565503]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat12" type="MeshInstance3D" parent="Placeholders" unique_id=2011760222]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -3.4622269, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat12" unique_id=931022471]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat12/StaticBody3D" unique_id=690021537]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat13" type="MeshInstance3D" parent="Placeholders" unique_id=1859919782]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -5.47983, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat13" unique_id=1731268041]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat13/StaticBody3D" unique_id=358633049]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat14" type="MeshInstance3D" parent="Placeholders" unique_id=1262048950]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -7.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat14" unique_id=1268982856]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat14/StaticBody3D" unique_id=920994763]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat15" type="MeshInstance3D" parent="Placeholders" unique_id=1093642124]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -9.47983, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat15" unique_id=1873575581]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat15/StaticBody3D" unique_id=1196130355]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat16" type="MeshInstance3D" parent="Placeholders" unique_id=797648945]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -11.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat16" unique_id=297414904]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat16/StaticBody3D" unique_id=799100512]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat17" type="MeshInstance3D" parent="Placeholders" unique_id=1461032374]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -13.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat17" unique_id=368922784]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat17/StaticBody3D" unique_id=1263067497]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat18" type="MeshInstance3D" parent="Placeholders" unique_id=1894020467]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -15.47983, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat18" unique_id=1678176040]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat18/StaticBody3D" unique_id=1942151658]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat19" type="MeshInstance3D" parent="Placeholders" unique_id=1559121573]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -17.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat19" unique_id=817984627]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat19/StaticBody3D" unique_id=419996491]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat20" type="MeshInstance3D" parent="Placeholders" unique_id=1343605356]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -17.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat20" unique_id=1790844554]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat20/StaticBody3D" unique_id=939209679]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat21" type="MeshInstance3D" parent="Placeholders" unique_id=1254248466]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -19.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat21" unique_id=563027063]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat21/StaticBody3D" unique_id=1284155191]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat22" type="MeshInstance3D" parent="Placeholders" unique_id=1775820985]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -20.462227, 1, -35.3638)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat22" unique_id=1118349900]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat22/StaticBody3D" unique_id=1753795653]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat23" type="MeshInstance3D" parent="Placeholders" unique_id=1336222740]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 17.52017, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat23" unique_id=422088541]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat23/StaticBody3D" unique_id=2015139857]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat24" type="MeshInstance3D" parent="Placeholders" unique_id=869933070]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 15.537773, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat24" unique_id=1351184734]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat24/StaticBody3D" unique_id=468743241]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat25" type="MeshInstance3D" parent="Placeholders" unique_id=1837017261]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 13.52017, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat25" unique_id=155767400]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat25/StaticBody3D" unique_id=319911111]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat26" type="MeshInstance3D" parent="Placeholders" unique_id=806638364]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 11.537773, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat26" unique_id=1402933725]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat26/StaticBody3D" unique_id=239553053]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat27" type="MeshInstance3D" parent="Placeholders" unique_id=202627484]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 9.52017, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat27" unique_id=1489279751]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat27/StaticBody3D" unique_id=1667960480]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat28" type="MeshInstance3D" parent="Placeholders" unique_id=581246818]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 7.537773, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat28" unique_id=1406356065]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat28/StaticBody3D" unique_id=591058895]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat29" type="MeshInstance3D" parent="Placeholders" unique_id=970811615]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 5.52017, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat29" unique_id=194976188]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat29/StaticBody3D" unique_id=760323033]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat30" type="MeshInstance3D" parent="Placeholders" unique_id=814827976]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 3.5377731, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat30" unique_id=529130198]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat30/StaticBody3D" unique_id=1806639060]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat31" type="MeshInstance3D" parent="Placeholders" unique_id=809433732]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 2.5201702, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat31" unique_id=1149994374]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat31/StaticBody3D" unique_id=911701390]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat32" type="MeshInstance3D" parent="Placeholders" unique_id=905533301]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0.53777313, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat32" unique_id=225065339]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat32/StaticBody3D" unique_id=174202860]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat33" type="MeshInstance3D" parent="Placeholders" unique_id=1508900224]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -1.4798298, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat33" unique_id=729110649]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat33/StaticBody3D" unique_id=481569240]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat34" type="MeshInstance3D" parent="Placeholders" unique_id=15998731]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -3.4622269, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat34" unique_id=1105722623]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat34/StaticBody3D" unique_id=1887580487]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat35" type="MeshInstance3D" parent="Placeholders" unique_id=876602462]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -5.47983, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat35" unique_id=2105354814]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat35/StaticBody3D" unique_id=1434410791]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat36" type="MeshInstance3D" parent="Placeholders" unique_id=134281936]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -7.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat36" unique_id=1239834939]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat36/StaticBody3D" unique_id=948418357]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat37" type="MeshInstance3D" parent="Placeholders" unique_id=927339875]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -9.47983, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat37" unique_id=285843168]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat37/StaticBody3D" unique_id=1784422052]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat38" type="MeshInstance3D" parent="Placeholders" unique_id=1670169723]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -11.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat38" unique_id=1916641525]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat38/StaticBody3D" unique_id=1626529201]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat39" type="MeshInstance3D" parent="Placeholders" unique_id=1912507893]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -13.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat39" unique_id=780199422]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat39/StaticBody3D" unique_id=1543510500]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat40" type="MeshInstance3D" parent="Placeholders" unique_id=1550212745]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -15.47983, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat40" unique_id=806776248]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat40/StaticBody3D" unique_id=1798408091]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat41" type="MeshInstance3D" parent="Placeholders" unique_id=75473462]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -17.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat41" unique_id=301308537]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat41/StaticBody3D" unique_id=1161247716]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat42" type="MeshInstance3D" parent="Placeholders" unique_id=1055681850]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -17.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat42" unique_id=1474343813]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat42/StaticBody3D" unique_id=1020362549]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat43" type="MeshInstance3D" parent="Placeholders" unique_id=221449902]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -19.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat43" unique_id=2009173309]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat43/StaticBody3D" unique_id=1180628210]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat44" type="MeshInstance3D" parent="Placeholders" unique_id=1183043660]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, -20.462227, 1, 4.2481384)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat44" unique_id=780294440]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat44/StaticBody3D" unique_id=357248633]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat45" type="MeshInstance3D" parent="Placeholders" unique_id=1603546977]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -34.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat45" unique_id=1979457760]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat45/StaticBody3D" unique_id=1022348648]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat46" type="MeshInstance3D" parent="Placeholders" unique_id=1454718080]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -32.80452)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat46" unique_id=1376808975]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat46/StaticBody3D" unique_id=2057309570]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat47" type="MeshInstance3D" parent="Placeholders" unique_id=1839809627]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -30.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat47" unique_id=784814273]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat47/StaticBody3D" unique_id=42682850]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat48" type="MeshInstance3D" parent="Placeholders" unique_id=504336253]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -28.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat48" unique_id=1906800963]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat48/StaticBody3D" unique_id=997597979]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat49" type="MeshInstance3D" parent="Placeholders" unique_id=468874521]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -26.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat49" unique_id=493788229]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat49/StaticBody3D" unique_id=1051912970]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat50" type="MeshInstance3D" parent="Placeholders" unique_id=382596939]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -24.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat50" unique_id=1007083630]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat50/StaticBody3D" unique_id=1658630695]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat51" type="MeshInstance3D" parent="Placeholders" unique_id=540100345]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -22.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat51" unique_id=1527054371]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat51/StaticBody3D" unique_id=599590695]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat52" type="MeshInstance3D" parent="Placeholders" unique_id=2084083452]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -20.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat52" unique_id=114167543]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat52/StaticBody3D" unique_id=197106013]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat53" type="MeshInstance3D" parent="Placeholders" unique_id=1424103296]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -19.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat53" unique_id=1183535836]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat53/StaticBody3D" unique_id=2108635729]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat54" type="MeshInstance3D" parent="Placeholders" unique_id=563983541]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -17.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat54" unique_id=1656432829]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat54/StaticBody3D" unique_id=1565965539]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat55" type="MeshInstance3D" parent="Placeholders" unique_id=827446629]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -15.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat55" unique_id=1938952054]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat55/StaticBody3D" unique_id=1851058101]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat56" type="MeshInstance3D" parent="Placeholders" unique_id=408527799]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -13.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat56" unique_id=1421685392]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat56/StaticBody3D" unique_id=533336139]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat57" type="MeshInstance3D" parent="Placeholders" unique_id=1298261069]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -11.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat57" unique_id=1004220367]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat57/StaticBody3D" unique_id=26708622]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat58" type="MeshInstance3D" parent="Placeholders" unique_id=846467551]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -9.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat58" unique_id=1869792384]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat58/StaticBody3D" unique_id=1965079302]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat59" type="MeshInstance3D" parent="Placeholders" unique_id=1974938029]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -7.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat59" unique_id=876643384]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat59/StaticBody3D" unique_id=711433822]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat60" type="MeshInstance3D" parent="Placeholders" unique_id=1952188340]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -5.8045177)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat60" unique_id=1635360448]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat60/StaticBody3D" unique_id=1091158984]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat61" type="MeshInstance3D" parent="Placeholders" unique_id=926107614]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -3.8045177)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat61" unique_id=1362074379]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat61/StaticBody3D" unique_id=1186061702]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat62" type="MeshInstance3D" parent="Placeholders" unique_id=547296459]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, -1.7869148)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat62" unique_id=2051895301]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat62/StaticBody3D" unique_id=14571389]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat63" type="MeshInstance3D" parent="Placeholders" unique_id=953188582]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, 0.19548225)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat63" unique_id=218100130]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat63/StaticBody3D" unique_id=1267978669]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat64" type="MeshInstance3D" parent="Placeholders" unique_id=1433216971]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, 0.19548225)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat64" unique_id=574799404]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat64/StaticBody3D" unique_id=556052858]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat65" type="MeshInstance3D" parent="Placeholders" unique_id=1734011029]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, 2.1954823)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat65" unique_id=130697736]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat65/StaticBody3D" unique_id=1072432024]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat66" type="MeshInstance3D" parent="Placeholders" unique_id=1692969367]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, -21.514883, 1, 3.1954823)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat66" unique_id=2005584392]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat66/StaticBody3D" unique_id=1754857179]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat67" type="MeshInstance3D" parent="Placeholders" unique_id=360732878]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -34.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat67" unique_id=144536488]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat67/StaticBody3D" unique_id=1337867728]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat68" type="MeshInstance3D" parent="Placeholders" unique_id=842130415]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -32.80452)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat68" unique_id=185454141]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat68/StaticBody3D" unique_id=313044124]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat69" type="MeshInstance3D" parent="Placeholders" unique_id=623574186]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -30.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat69" unique_id=241874875]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat69/StaticBody3D" unique_id=1455409228]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat70" type="MeshInstance3D" parent="Placeholders" unique_id=2089475348]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -28.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat70" unique_id=1337193786]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat70/StaticBody3D" unique_id=1912087374]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat71" type="MeshInstance3D" parent="Placeholders" unique_id=1147453251]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -26.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat71" unique_id=2085443436]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat71/StaticBody3D" unique_id=143271959]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat72" type="MeshInstance3D" parent="Placeholders" unique_id=536798670]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -24.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat72" unique_id=56127224]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat72/StaticBody3D" unique_id=1879930051]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat73" type="MeshInstance3D" parent="Placeholders" unique_id=1308304180]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -22.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat73" unique_id=967861164]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat73/StaticBody3D" unique_id=453373076]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat74" type="MeshInstance3D" parent="Placeholders" unique_id=1437021991]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -20.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat74" unique_id=462587077]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat74/StaticBody3D" unique_id=420144095]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat75" type="MeshInstance3D" parent="Placeholders" unique_id=857693571]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -19.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat75" unique_id=672535346]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat75/StaticBody3D" unique_id=1840401644]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat76" type="MeshInstance3D" parent="Placeholders" unique_id=632934594]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -17.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat76" unique_id=1492771036]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat76/StaticBody3D" unique_id=1119287581]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat77" type="MeshInstance3D" parent="Placeholders" unique_id=1910479524]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -15.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat77" unique_id=1220511529]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat77/StaticBody3D" unique_id=387019361]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat78" type="MeshInstance3D" parent="Placeholders" unique_id=152279855]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -13.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat78" unique_id=1416934184]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat78/StaticBody3D" unique_id=749211003]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat79" type="MeshInstance3D" parent="Placeholders" unique_id=820003200]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -11.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat79" unique_id=937529080]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat79/StaticBody3D" unique_id=819526312]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat80" type="MeshInstance3D" parent="Placeholders" unique_id=607751166]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -9.804518)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat80" unique_id=1109374799]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat80/StaticBody3D" unique_id=208039539]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat81" type="MeshInstance3D" parent="Placeholders" unique_id=53548527]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -7.786915)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat81" unique_id=714350705]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat81/StaticBody3D" unique_id=1014657275]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat82" type="MeshInstance3D" parent="Placeholders" unique_id=1608505127]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -5.8045177)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat82" unique_id=647294776]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat82/StaticBody3D" unique_id=619523217]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat83" type="MeshInstance3D" parent="Placeholders" unique_id=526708256]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -3.8045177)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat83" unique_id=2011433276]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat83/StaticBody3D" unique_id=100530527]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat84" type="MeshInstance3D" parent="Placeholders" unique_id=1650153015]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, -1.7869148)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat84" unique_id=512355021]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat84/StaticBody3D" unique_id=282814694]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat85" type="MeshInstance3D" parent="Placeholders" unique_id=1990025322]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, 0.19548225)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat85" unique_id=2048603686]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat85/StaticBody3D" unique_id=1137567167]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat86" type="MeshInstance3D" parent="Placeholders" unique_id=364863742]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, 0.19548225)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat86" unique_id=1018140759]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat86/StaticBody3D" unique_id=2075446696]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat87" type="MeshInstance3D" parent="Placeholders" unique_id=559452466]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, 2.1954823)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat87" unique_id=1318921495]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat87/StaticBody3D" unique_id=1750489910]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[node name="wooden plat88" type="MeshInstance3D" parent="Placeholders" unique_id=40213607]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.371138e-08, 0.9999999, -0.99999994, 4.371138e-08, 1.9106853e-15, 18.485117, 1, 3.1954823)
+mesh = SubResource("ArrayMesh_3dqyf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Placeholders/wooden plat88" unique_id=438255936]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Placeholders/wooden plat88/StaticBody3D" unique_id=1027639975]
+shape = SubResource("ConcavePolygonShape3D_b8mmp")
+
+[editable path="Placeholders"]

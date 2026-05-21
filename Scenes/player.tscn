@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://ctu0ijhkofc6e"]
+
+[ext_resource type="Script" uid="uid://cag21d3yu2yxu" path="res://Assets/Scripts/player.gd" id="1_y0qk3"]
+[ext_resource type="PackedScene" uid="uid://ccbmikics3pv5" path="res://Assets/Objects/IronDagger.glb" id="2_ph473"]
+[ext_resource type="PackedScene" uid="uid://dygmq477bs1jf" path="res://Assets/Objects/l_hard_rock.glb" id="3_6t5aa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yp4wr"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_a02cp"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" unique_id=391161488 groups=["player"]]
+script = ExtResource("1_y0qk3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1565499318]
+shape = SubResource("CapsuleShape3D_yp4wr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1182286514]
+mesh = SubResource("CapsuleMesh_a02cp")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=178654154]
+transform = Transform3D(1, 0, 0, 0, 0.9998608, -0.016684573, 0, 0.016684573, 0.9998608, -0.007937074, 0.64077127, -0.08268556)
+
+[node name="RWeaponHolder" type="Node3D" parent="Camera3D" unique_id=459353602]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.07975829, 0.0013309196)
+
+[node name="IronDagger" parent="Camera3D/RWeaponHolder" unique_id=530964079 instance=ExtResource("2_ph473")]
+transform = Transform3D(-0.09476959, 0.030774262, 0.008465662, 0.0123582315, 0.0598347, -0.07916494, -0.02942782, -0.07397809, -0.060508247, 0.46055472, -0.12144148, -0.42665634)
+
+[node name="LWeaponHolder" type="Node3D" parent="Camera3D" unique_id=1133828093]
+
+[node name="l_hard_rock" parent="Camera3D/LWeaponHolder" unique_id=1546003347 instance=ExtResource("3_6t5aa")]
+transform = Transform3D(-0.04422966, 0, 0.9990214, 0.24242947, 0.97011054, 0.010733076, -0.96916074, 0.24266694, -0.04290762, -0.438, -0.23833787, -0.28715107)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=498918574]
+
+[node name="StaminaLabel" type="Label" parent="HUD" unique_id=80267691]
+offset_left = -1.0
+offset_right = 225.0
+offset_bottom = 24.0
+vertical_alignment = 1
+
+[node name="HPLabel" type="Label" parent="HUD" unique_id=1577948746]
+offset_top = 25.0
+offset_right = 226.0
+offset_bottom = 49.0
+vertical_alignment = 1
+
+[node name="Crosshair" type="Label" parent="HUD" unique_id=768479307]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.5
+offset_top = -23.5
+offset_right = 45.5
+offset_bottom = 23.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(45.5, 23.5)
+theme_override_font_sizes/font_size = 34
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Controls" type="Label" parent="HUD" unique_id=1967922815]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -159.0
+offset_bottom = 99.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 10
+text = "Controls Available:
+WASD - Walk
+Shift - Dash || Shift(hold) - Sprint
+Space - Jump 2x
+Left Click - Melee
+Right CLick - Ranged"
+horizontal_alignment = 2
