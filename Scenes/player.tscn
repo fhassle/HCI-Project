@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cag21d3yu2yxu" path="res://Assets/Scripts/player.gd" id="1_y0qk3"]
 [ext_resource type="PackedScene" uid="uid://ccbmikics3pv5" path="res://Assets/Objects/IronDagger.glb" id="2_ph473"]
 [ext_resource type="PackedScene" uid="uid://dygmq477bs1jf" path="res://Assets/Objects/l_hard_rock.glb" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://drx4p3oqict83" path="res://Assets/Scripts/wraith_stats.gd" id="4_vgqql"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yp4wr"]
 radius = 0.4
@@ -12,14 +13,11 @@ height = 1.8
 radius = 0.4
 height = 1.8
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_vgqql"]
+
 [node name="Player" type="CharacterBody3D" unique_id=391161488 groups=["player"]]
+collision_mask = 9
 script = ExtResource("1_y0qk3")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1565499318]
-shape = SubResource("CapsuleShape3D_yp4wr")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1182286514]
-mesh = SubResource("CapsuleMesh_a02cp")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=178654154]
 transform = Transform3D(1, 0, 0, 0, 0.9998608, -0.016684573, 0, 0.016684573, 0.9998608, -0.007937074, 0.64077127, -0.08268556)
@@ -35,6 +33,31 @@ transform = Transform3D(-0.09476959, 0.030774262, 0.008465662, 0.0123582315, 0.0
 [node name="l_hard_rock" parent="Camera3D/LWeaponHolder" unique_id=1546003347 instance=ExtResource("3_6t5aa")]
 transform = Transform3D(-0.04422966, 0, 0.9990214, 0.24242947, 0.97011054, 0.010733076, -0.96916074, 0.24266694, -0.04290762, -0.438, -0.23833787, -0.28715107)
 
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1565499318]
+shape = SubResource("CapsuleShape3D_yp4wr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1182286514]
+mesh = SubResource("CapsuleMesh_a02cp")
+
+[node name="WraithStats" type="Node" parent="." unique_id=606837048]
+script = ExtResource("4_vgqql")
+
+[node name="RavageArea" type="Area3D" parent="WraithStats" unique_id=1031380945]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WraithStats/RavageArea" unique_id=910825852]
+shape = SubResource("SphereShape3D_vgqql")
+
+[node name="AssassinateArea" type="Area3D" parent="WraithStats" unique_id=1871943255]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WraithStats/AssassinateArea" unique_id=1320346426]
+shape = SubResource("SphereShape3D_vgqql")
+
+[node name="SentinelStats" type="Node" parent="." unique_id=1195337276]
+
+[node name="VesselStats" type="Node" parent="." unique_id=123866910]
+
 [node name="HUD" type="CanvasLayer" parent="." unique_id=498918574]
 
 [node name="StaminaLabel" type="Label" parent="HUD" unique_id=80267691]
@@ -47,6 +70,12 @@ vertical_alignment = 1
 offset_top = 25.0
 offset_right = 226.0
 offset_bottom = 49.0
+vertical_alignment = 1
+
+[node name="FocusLabel" type="Label" parent="HUD" unique_id=375069202]
+offset_top = 50.0
+offset_right = 226.0
+offset_bottom = 74.0
 vertical_alignment = 1
 
 [node name="Crosshair" type="Label" parent="HUD" unique_id=768479307]
@@ -75,10 +104,14 @@ offset_left = -159.0
 offset_bottom = 99.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 10
-text = "Controls Available:
-WASD - Walk
-Shift - Dash || Shift(hold) - Sprint
-Space - Jump 2x
-Left Click - Melee
-Right CLick - Ranged"
+text = "Controls:
+Keyboard || Gamepad
+WASD || LJoy - Walk
+Mouse || RJoy - Camera
+Shift > (hold) || RT > (hold) - Dash > Sprint
+Space || A - Jump 2x
+Left Click || LB - Melee
+Right Click || LB - Ranged
+Q || X - Skill
+E || B - Ult"
 horizontal_alignment = 2

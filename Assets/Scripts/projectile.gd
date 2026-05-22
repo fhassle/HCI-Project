@@ -1,5 +1,7 @@
 extends RigidBody3D
 
+signal hit_enemy(enemy: Node3D)
+
 # Projectile Speed
 var speed = 20.0
 var damage = 25.0
@@ -14,4 +16,5 @@ func _on_body_entered(body):
 		body.take_damage(damage)
 	elif body.is_in_group("enemies"):
 		body.take_damage(damage)
+		hit_enemy.emit(body)
 	queue_free()

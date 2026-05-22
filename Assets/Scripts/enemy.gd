@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
 # HP --------------------------------------
-var hp = 100.0
-const MAX_HP = 100.0
+var hp = 200.0
+const MAX_HP = 200.0
 
 # Detection -------------------------------
 const DETECTION_RANGE = 10.0
