@@ -3,8 +3,18 @@
 [ext_resource type="Script" uid="uid://ckgskcqdxgli6" path="res://Assets/Scripts/projectile.gd" id="1_yr2qt"]
 [ext_resource type="PackedScene" uid="uid://ccbmikics3pv5" path="res://Assets/Objects/IronDagger.glb" id="2_tl4hk"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yr2qt"]
+albedo_color = Color(1, 0.60784316, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_t1"]
+radius = 0.2
+height = 0.4
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_a4egy"]
 size = Vector3(0.19942379, 0.2775879, 0.33538818)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_s1"]
+radius = 0.2
 
 [node name="Projectile" type="RigidBody3D" unique_id=129464057]
 continuous_cd = true
@@ -16,10 +26,19 @@ script = ExtResource("1_yr2qt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.461, -0.122, -0.475)
 
 [node name="IronDagger" parent="MeshInstance3D" unique_id=530964079 instance=ExtResource("2_tl4hk")]
-transform = Transform3D(-0.099522024, -0.004788775, 0.008510821, -0.009671792, 0.06038303, -0.079122365, -0.0013501048, -0.07956733, -0.060557574, 0, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.0048110485)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2032801424]
+[node name="SphereVisual" type="MeshInstance3D" parent="." unique_id=362880123]
+visible = false
+material_override = SubResource("StandardMaterial3D_yr2qt")
+mesh = SubResource("SphereMesh_t1")
+
+[node name="DaggerCollision" type="CollisionShape3D" parent="." unique_id=2032801424]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.41224483, -0.122, -0.475)
 shape = SubResource("BoxShape3D_a4egy")
+
+[node name="SphereCollision" type="CollisionShape3D" parent="." unique_id=411223344]
+shape = SubResource("SphereShape3D_s1")
+disabled = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

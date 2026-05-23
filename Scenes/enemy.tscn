@@ -24,3 +24,10 @@ mesh = SubResource("CapsuleMesh_q26ig")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2761085, 0.5257821, 0)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=98740465]
+
+[node name="HPLabel" type="Label3D" parent="." unique_id=553344221]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+billboard = 1
+text = "200"
+font_size = 48
+outline_size = 4

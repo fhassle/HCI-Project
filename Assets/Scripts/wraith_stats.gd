@@ -2,6 +2,8 @@ extends Node
 
 # HUD ---------------------------------------------
 @onready var focus_label = get_parent().get_node("HUD/FocusLabel")
+@onready var skill_label = get_parent().get_node("HUD/SkillCooldown")
+@onready var ult_label = get_parent().get_node("HUD/UltCooldown")
 
 # Wraith Stats (applied to Player on select) ------
 const CLASS_HP = 60.0
@@ -43,8 +45,8 @@ const PROJECTILE_SCENE = preload("res://Scenes/projectile.tscn")
 const RAVAGE_DAMAGE = 40.0
 const RAVAGE_SPEED = 40.0
 const RAVAGE_DURATION = 0.1
-const RAVAGE_COOLDOWN = 3.0
-const RAVAGE_STAMINA_COST = 38.5
+const RAVAGE_COOLDOWN = 4.5
+const RAVAGE_STAMINA_COST = 0.0
 var ravage_cooldown = 0.0
 var is_ravaging = false
 var ravage_time = 0.0
@@ -52,18 +54,18 @@ var ravage_dir = Vector3.ZERO
 var ravage_hit: Array[Node] = []
 
 # E: Assassinate ----------------------------------
-const ASSASSINATE_COOLDOWN = 0.0
+const ASSASSINATE_COOLDOWN = 10.0
 const ASSASSINATE_FOCUSED_COOLDOWN = 5.0
 const ASSASSINATE_RANGE = 8.0
 const ASSASSINATE_DASH_SPEED = 25.0
 const ASSASSINATE_EXECUTE_PCT = 0.3
 const ASSASSINATE_NORMAL_DMG = 10.0
 const ASSASSINATE_BOSS_DMG = 50.0
+const ASSASSINATE_AOE_RADIUS = 3.0
 var assassinate_cooldown = 0.0
 var is_assassinating = false
 var assassinate_target: Node3D = null
 var assassinate_start: Vector3
-var assassinate_end: Vector3
 
 # References (set by player.gd) --------------------
 var player: CharacterBody3D
@@ -86,6 +88,8 @@ func process_class(delta: float) -> void:
 		assassinate_cooldown -= delta
 
 	focus_label.text = "Focus: " + str(round(focus)) + "/" + str(MAX_FOCUS)
+	skill_label.text = "Skill: Ready" if ravage_cooldown <= 0 else "Skill: " + str(snapped(ravage_cooldown, 0.1)) + "s"
+	ult_label.text = "Ult: Ready" if assassinate_cooldown <= 0 else "Ult: " + str(snapped(assassinate_cooldown, 0.1)) + "s"
 
 	if is_focused:
 		focused_timer -= delta
@@ -108,24 +112,29 @@ func process_class(delta: float) -> void:
 				_gain_focus()
 		if ravage_time <= 0:
 			is_ravaging = false
+			player.velocity.y = 0
 			player.set_collision_mask_value(4, true)
 
 	# Active: Assassinate lunge ------------------
 	if is_assassinating:
-		var dir_to_target = (assassinate_end - player.global_position).normalized()
-		var dist_to_end = player.global_position.distance_to(assassinate_end)
-		if dist_to_end <= 0.5 or player.global_position.distance_to(assassinate_start) >= ASSASSINATE_RANGE:
+		if not assassinate_target or not is_instance_valid(assassinate_target):
 			is_assassinating = false
-			if assassinate_target and is_instance_valid(assassinate_target):
-				_execute_damage(assassinate_target)
 			assassinate_target = null
 			return
-		player.velocity = dir_to_target * ASSASSINATE_DASH_SPEED
-		if assassinate_target and is_instance_valid(assassinate_target):
-			if player.global_position.distance_to(assassinate_target.global_position) <= 1.5:
-				is_assassinating = false
-				_execute_damage(assassinate_target)
-				assassinate_target = null
+		var dir = (assassinate_target.global_position - player.global_position).normalized()
+		player.velocity = dir * ASSASSINATE_DASH_SPEED
+		var hit: Node3D = null
+		for body in player.get_tree().get_nodes_in_group("enemies"):
+			if player.global_position.distance_to(body.global_position) <= 2.0:
+				hit = body
+				break
+		if hit or player.global_position.distance_to(assassinate_start) >= ASSASSINATE_RANGE:
+			is_assassinating = false
+			if hit:
+				for body in player.get_tree().get_nodes_in_group("enemies"):
+					if player.global_position.distance_to(body.global_position) <= ASSASSINATE_AOE_RADIUS:
+						_execute_damage(body)
+			assassinate_target = null
 
 
 func _execute_damage(body: Node3D) -> void:
@@ -193,11 +202,11 @@ func skill() -> void:
 	if player.stamina < RAVAGE_STAMINA_COST:
 		return
 	var cam_forward = -camera.global_transform.basis.z
-	ravage_dir = Vector3(cam_forward.x, 0, cam_forward.z).normalized()
+	ravage_dir = cam_forward.normalized()
 	player.stamina -= RAVAGE_STAMINA_COST
 	ravage_hit.clear()
 	is_ravaging = true
-	ravage_time = RAVAGE_DURATION * (0.05 if player.is_exhausted else 1.0)
+	ravage_time = RAVAGE_DURATION * (0.5 if player.is_exhausted else 1.0)
 	player.velocity = Vector3.ZERO
 	ravage_cooldown = RAVAGE_COOLDOWN
 	player.set_collision_mask_value(4, false)
@@ -215,7 +224,7 @@ func ult() -> void:
 		var distance = to_enemy.length()
 		if distance > ASSASSINATE_RANGE:
 			continue
-		var angle = rad_to_deg(to_enemy.normalized().angle_to(-player.global_transform.basis.z))
+		var angle = rad_to_deg(to_enemy.normalized().angle_to(-camera.global_transform.basis.z))
 		if angle > 30.0:
 			continue
 		var ray_query = PhysicsRayQueryParameters3D.create(
@@ -233,8 +242,6 @@ func ult() -> void:
 		return
 	assassinate_target = best_body
 	assassinate_start = player.global_position
-	var dir_to_enemy = (best_body.global_position - player.global_position).normalized()
-	assassinate_end = best_body.global_position - dir_to_enemy * 1.0
 	is_assassinating = true
 	player.velocity = Vector3.ZERO
 	assassinate_cooldown = get_assassinate_cooldown()

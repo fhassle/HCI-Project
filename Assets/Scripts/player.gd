@@ -44,6 +44,10 @@ var hp = 100.0
 var max_hp = 100.0
 @onready var hp_label = $HUD/HPLabel
 
+# I-Frames ----------------------------------------
+const IFRAME_DURATION = 1.0
+var iframe_timer = 0.0
+
 # Stamina -----------------------------------------
 var stamina = 100.0
 var max_stamina = 100.0
@@ -87,7 +91,7 @@ func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * sensitivity)
 		camera.rotate_x(-event.relative.y * sensitivity)
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(70))
+		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(85))
 
 # Terminate Input ---------------------------------
 func _process(_delta):
@@ -145,7 +149,7 @@ func _physics_process(delta: float) -> void:
 		if dash_timer <= 0:
 			is_dashing = false
 
-	if Input.is_action_pressed("dash") and not is_sprinting:
+	if Input.is_action_pressed("dash") and not is_sprinting and not is_exhausted:
 		dash_hold_time += delta
 		if dash_hold_time >= DASH_HOLD_THRESHOLD:
 			is_sprinting = true
@@ -191,6 +195,9 @@ func _physics_process(delta: float) -> void:
 
 	# Health HUD ---------------------------------
 	hp_label.text = "HP: " + str(round(hp)) + "/" + str(max_hp)
+
+	if iframe_timer > 0:
+		iframe_timer -= delta
 
 	# Movement selection --------------------------
 	if is_dashing:
@@ -275,8 +282,11 @@ func _fist_lunge():
 
 # DMG Taken ---------------------------------------
 func take_damage(amount: float):
+	if iframe_timer > 0:
+		return
 	if active_class.has_method("is_invincible") and active_class.is_invincible():
 		return
+	iframe_timer = IFRAME_DURATION
 	hp -= amount
 	hp = clamp(hp, 0, max_hp)
 	print("Player HP: ", hp)

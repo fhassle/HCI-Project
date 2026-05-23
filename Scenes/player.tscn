@@ -78,6 +78,18 @@ offset_right = 226.0
 offset_bottom = 74.0
 vertical_alignment = 1
 
+[node name="SkillCooldown" type="Label" parent="HUD" unique_id=268002214]
+offset_top = 75.0
+offset_right = 226.0
+offset_bottom = 99.0
+vertical_alignment = 1
+
+[node name="UltCooldown" type="Label" parent="HUD" unique_id=737689517]
+offset_top = 100.0
+offset_right = 226.0
+offset_bottom = 124.0
+vertical_alignment = 1
+
 [node name="Crosshair" type="Label" parent="HUD" unique_id=768479307]
 anchors_preset = 8
 anchor_left = 0.5
