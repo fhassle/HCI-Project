@@ -92,12 +92,6 @@ offset_right = 226.0
 offset_bottom = 124.0
 vertical_alignment = 1
 
-[node name="ClassLabel" type="Label" parent="HUD" unique_id=273606760]
-offset_top = 125.0
-offset_right = 226.0
-offset_bottom = 149.0
-vertical_alignment = 1
-
 [node name="Crosshair" type="Label" parent="HUD" unique_id=768479307]
 anchors_preset = 8
 anchor_left = 0.5

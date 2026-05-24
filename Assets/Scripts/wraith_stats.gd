@@ -74,6 +74,7 @@ var camera: Camera3D
 
 func _ready():
 	player = get_parent()
+	add_to_group("class_stats")
 	while player.get_child_count() == 0 or not player.has_node("Camera3D"):
 		await get_tree().process_frame
 	camera = player.get_node("Camera3D")

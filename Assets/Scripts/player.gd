@@ -4,6 +4,7 @@ extends CharacterBody3D
 var sensitivity = 0.003
 @onready var camera = $Camera3D
 @onready var stamina_label = $HUD/StaminaLabel
+@onready var class_label = $HUD/ClassLabel
 
 # Weapon Holder -----------------------------------
 @onready var weapon_holder = $Camera3D/RWeaponHolder
@@ -74,6 +75,25 @@ func _ready():
 	_apply_class_stats()
 
 
+func _cycle_class() -> void:
+	var classes: Array[Node] = []
+	for child in get_children():
+		if child.is_in_group("class_stats"):
+			classes.append(child)
+	if classes.size() < 2:
+		return
+	var idx = classes.find(active_class)
+	if idx < 0:
+		idx = 0
+	var next_idx = (idx + 1) % classes.size()
+	active_class = classes[next_idx]
+	_apply_class_stats()
+	is_dashing = false
+	is_sprinting = false
+	is_exhausted = false
+	class_label.text = "Class: " + active_class.name.replace("Stats", "")
+
+
 func _apply_class_stats():
 	hp = active_class.CLASS_HP
 	max_hp = active_class.CLASS_MAX_HP
@@ -97,6 +117,8 @@ func _input(event):
 func _process(_delta):
 	if Input.is_action_just_pressed("terminate"):
 		get_tree().quit()
+	if Input.is_action_just_pressed("switch"):
+		_cycle_class()
 	
 	var joy_x = Input.get_joy_axis(0, JOY_AXIS_RIGHT_X)
 	var joy_y = Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y)
@@ -285,6 +307,8 @@ func take_damage(amount: float):
 	if iframe_timer > 0:
 		return
 	if active_class.has_method("is_invincible") and active_class.is_invincible():
+		if active_class.has_method("on_parry_success") and active_class.get("parry_window"):
+			active_class.on_parry_success()
 		return
 	iframe_timer = IFRAME_DURATION
 	hp -= amount

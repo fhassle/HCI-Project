@@ -1,0 +1,168 @@
+GAME DESIGN KINEME
+
+Those that has '(?)' means that it may be changed later
+
+GENRE: Rougelike, First-Person Shooter, Dark Fantasy-ish
+
+ARTSTYLE: Firs-Person 2.5D, Pixel art or Retro(?)
+
+SETTING/PLOT/ENVIRONMENT:
+- Inside a giant 10 Floor tower
+- So iintegrated ko dito yung first idea ko, yung 'Virus' kineme. So nandito na ulit yung plant-based virus, but this time hindi na iintindihin gaano yung story, focus na sa gameplay
+
+VIRUS BACKGROUND(Di na to iintindihin lang, lagay ko lang dito para may idea yung artists and SFX kung pano gagawin nila):
+- This Virus is caused by a mistake, by a failed experiment, as per Arvin the niga. Since plant-like to, maybe nag experiment mga scientist to try and prolong human life by trying to cross hybrid us humans with some kinda plant? idk. 
+Anyway, isip tayo ng way or symbol na madaling ma rrecognize ng player na living being yung virus, maybe enemies has a red and yellow colored, glowing flower sa katawan nila or mag iiba color ng hair nila?
+As per the effects ng Virus, basically parang zombies hehe. Like once infected ka, may flower agad na mag sstart tumubo somewhere on ur body, and once nag bloom yung flower, its the moment u die, basically acting like a timer. 
+
+
+CORE IDEA:
+- The player has three classes to choose form, each with their own unique set of abilities and class specific buffs.
+
+- Apart from the usual HP and stamina resources, each class will have their own unique resource they'll use for their abilities.
+- Types of Skills:
+  1. AOE
+  2. Protect
+  3. Burst - Deals heavy damage, be it AOE or single target
+  4. Crowd control
+  5. Blink
+  6. Buff
+  7. Debuff
+  8. Damage - Single target damage, average damage
+
+- Stamina and Dash Mechanic:
+  > Tapping shift will only do a Dash, holding it transitions the Dash to a full Sprint.
+  > Stamina gradually recovers when walking, recovery speed greatly increases when standing still
+  > If stamina hits 0, enter 'Exhausted' state.
+  > Exhausted - Dash is disabled and walk speed is reduced by 40%.
+
+- Each class has two Basic attacks, a ranged and a melee, along with a basic skill and an Ult that slowly charges over time(?), and some will also have a unique dash 
+mechanic. The classes are as follows:
+(tba)
+1. Sentinel
+- Unique Resource/Mechanic/Stats: 
+  > Mana - Skill requirement, can be recovered by standing in Magic circles.
+  > Branded Mark - Marked enemies has their move speed slowed by 15% and damage lowered by 20%
+  > Defensive skills but Low stamina
+
+- Abilities:
+  > Left Click/Melee: "Banishment" [Crowd Control, Debuff]
+	- A low damage attack but pushes back all enemies hit, marks one of those that are hit
+	- Attacking right before getting hit will make the player immune to all damage by 0.25secs
+  > Right Click/Ranged: "Punishment" [Burst]
+	- A high damage projectile. If there is an enemy 'Branded', the projectile homes to them.
+  > 'Q'/Skill: "Denouncement" [Crowd Control, Buff]
+	- Summons a Magic Circle, enemies who enters has their move speed slowed by 30%.
+  > 'E'/Ult: "Judgement" [Crowd Control, Debuff]
+	- Activate condition: Charges every second, charge rate increases by 30% when standing in magic circles.
+	- Summons an aerial Magic Circle, after a few seconds, all enemies below are petrified/stunned and is 'Branded'.
+  > Shift/Dash: Base dash (no bonus effects)
+
+2. Wraith
+- Unique Resource/Mechanic/Stats:
+  > Focus - Charged when hitting an enemy, reduced by 50% of current progress when taking damage.
+  > Focused state - Once focus is full, enters 'Focused' state, Dash and Sprint costs no stamina during this state.
+  > Very Low HP, Lowest DPS of the three class, but has High mobility and has Auto-kill abilities
+
+- Abilities:
+  > Left Click/Melee: "Claw" [Burst, AOE]
+	- Scratches an enemy, high damage.
+  > Right Click/Ranged: "Knives"[Damage]
+	- Throws a Dagger.
+  > 'Q'/Skill: "Ravage" [Blink, Burst]
+	- Dashes forward and deals heavy damage on contact. Uses stamina.
+	- During 'Exhausted' state, damage and range is cut by 50%
+  > 'E'/Ult: "Assassinate" [Blink, Burst]
+	- Activate condition: Has a fixed cooldown, but cooldown is halved during 'Focused'
+	- Dashes a small distance forward, only hits one enemy.
+	- If the hit enemy's HP is below 30%, automatically kills them. Else, deal small damage.
+	- For bosses, if HP is below 30%, deal increased damage. Else, deal small damage.
+  > Shift/Dash: "Phantom" [Buff]
+	- While dashing, immune to all damage.
+
+3. Vessel
+- Unique Resource/Mechanic/Stats:
+  > Influence - Charges every time HP is lost. The more enemies hit, the more 'Influence' builds up. Loses 'Influence' by healing or not attacking.
+  > Berserk state - At 80% - 99%, enters 'Berserk' state. All damage is increased to 1.5x.
+  > Consumed state - At 100% enter 'Consumed' state. Takes 2x damage, cannot 'Sprint', and all abilities has their cooldown doubled except for 'Feral Swing' and 'Rampage"
+  > All abilities except or dash consumes a portion of HP.
+  > Highest DPS, rewards staying in the middle of the battle but requires managing 'Influence'.
+
+- Abilities:
+  > Left Click/Melee: "Feral Swing" [Burst, AOE]
+	- High damage, knocks enemies back. 
+	- During consumed, cooldown is removed and damage is doubled.
+  > Right Click/Ranged: "Outburst" [Burst, AOE]
+	- Mid-Ranged attack.
+  > 'Q'/Skill: "Blast" [AOE, Buff]
+	- Deals damage around the player, heals HP for each enemy hit.
+  > 'E'/Ult: "Bloom" [Buff]
+	- Activate condition: Can be cast when 'Influence' is less than 80%
+	- Charges 'Influence' by 20% in exchange for a huge portion of HP.
+  > Shift/Dash: "Rampage'[AOE, Crowd Control]
+	- Dash is slightly extended, deals damage on contact, and knocks enemies back.
+
+CLASS GAMEPLAY IDEA:
+1. Exorcist:
+> Has Mana(?)
+> Relies heavily in defensive abilities, keeping dangers from going near the player.
+> this class is specifically for "non-gamer players".
+
+2. Assassin
+> Skill based and movement focused class, has more stamina
+> heavily reduced defense and HP and attack but has some "auto kill" condition skills
+
+3. Brawler
+> Is infected by the virus, this class will have to micro manage a virus-based resource. 
+> Kumbaga ito yung character na nandun sa unang suggestion ko, "Virus"
+> Each use of his abilities will rapidly fill the Infection gauge(?). This gauge will also rapidly go back after 2secs of not using any skills
+> Since this is a class that ignores survivability, bibigyan to ng abilties na kayang mag heal
+
+
+FLOOR MECHANICS
+- The game has 11(?) floors. Every 2 floors, the players is given the choice to choose from 3 buffs(class specific) that changes or adds effects of their toolkits
+
+- The rooms will be random, we will create more than 5 templates shared by these three clear conditions that will randomly be chosen each floor:
+
+- Each floor will have a different clear condition:
+1. Ambush:
+  > There will be two waves of enemies, each lasting for 60 seconds. Survive and the floor is cleared
+2. Cleanse:
+  > There will be magic circles randomly spawning in the floor, each lasting for 15 Secs.
+  > Standing in these magic circles will fill up a bar over time, the player needs a total of 20 secs standing in a circle.
+  > Enemies will continuously spawn as long as the bar isn't filled.
+  > If an enemy is inside the circle along with the player, the bar slows down by 50%. If the player is hit while inside the circle, the progress bar is reduced by 10%.
+  > Fill the bar to 100%(20 secs) and the floor is cleared
+3. Escort:
+  > There will be an NPC hiding somewhere in the floor, there will also be an enemy that is holding a bandage item that will patch up the NPC.
+  > Once the NPC is treated, it will begin the Escort event and will slowly start crawling towards the exit.
+  > During this, enemies will continuously rush towards the NPC, the closer it gets to the exit, the more enemy there will be.
+  > Once the NPC reaches the exit, the enemies will stop respawning. Clear the remaining enemies and the floor is cleared
+
+- We'll also have three special floors:
+4. Retrieval:
+  > Get an item to open the gate to the next floor.
+  > Has semi-platforming elements.
+  > In this floor type, all enemies will have their movement speed increased by 20% and will continuously spawn until the player opens the gate
+  > Will have unique floor templates
+  > Open the gate and the floor is cleared. Once the floor is cleared, all enemies dies.
+
+5. Boss room:
+  > Will have unique floor templates
+
+- At floors 5 and 10, the player can visit a shop to buy consumables. There will also be an infirmary, the player can choose one from two actions to do here(they can only choose one, choosing an action locks the other choice):
+1. Meditate: Choose from 1 from 3 buffs
+2. Rest: Heal 40%(?) lost HP
+
+- At floor 11, the final boss will be fought:
+1. More than 1 boss will be developed which will be randomly chosen by the system
+2. If possible, lets make more than 1 phase.
+3. The lower the HP of the boss, the more minions will spawn.
+4. Survive the waves of minions and kill the Final boss to clear the run.
+
+- Trials
+  > Available after first boss
+  > Buff
+  > Heavenly restriction
+  > Debuff pero more rewards
+

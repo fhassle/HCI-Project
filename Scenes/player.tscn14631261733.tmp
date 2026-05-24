@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dygmq477bs1jf" path="res://Assets/Objects/l_hard_rock.glb" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://drx4p3oqict83" path="res://Assets/Scripts/wraith_stats.gd" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://budptj8dm3vc5" path="res://Assets/Scripts/sentinel_stats.gd" id="5_x3wgy"]
+[ext_resource type="Script" uid="uid://bp3i1x736iu0a" path="res://Assets/Scripts/vessel_stats.gd" id="6_3smsa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yp4wr"]
 radius = 0.4
@@ -59,6 +60,7 @@ shape = SubResource("SphereShape3D_vgqql")
 script = ExtResource("5_x3wgy")
 
 [node name="VesselStats" type="Node" parent="." unique_id=123866910]
+script = ExtResource("6_3smsa")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=498918574]
 
@@ -90,12 +92,6 @@ vertical_alignment = 1
 offset_top = 100.0
 offset_right = 226.0
 offset_bottom = 124.0
-vertical_alignment = 1
-
-[node name="ClassLabel" type="Label" parent="HUD" unique_id=273606760]
-offset_top = 125.0
-offset_right = 226.0
-offset_bottom = 149.0
 vertical_alignment = 1
 
 [node name="Crosshair" type="Label" parent="HUD" unique_id=768479307]
