@@ -12,14 +12,13 @@ const CLASS_SPRINT_DRAIN = 12.0
 const CLASS_EXHAUSTED_SPEED = 3.5
 
 # Melee timing for player.gd -----------------------
-const MELEE_COOLDOWN_TIME = 0.6
-const MELEE_FORESWING = 0.2
+const MELEE_ATTACK_SPEED = 0.7
 
 # Mana Resource ------------------------------------
 var mana = 100.0
 const MAX_MANA = 100.0
-const MANA_REGEN_BASE = 10.0
-const MANA_REGEN_CIRCLE_BONUS = 20.0
+const MANA_REGEN_BASE = 8.0
+const MANA_REGEN_CIRCLE_BONUS = 15.0
 const COMBAT_TIMEOUT = 2.0
 var combat_timer = 0.0
 
@@ -28,9 +27,10 @@ const BRANDED_DURATION = 5.0
 
 # LMB: Banishment ---------------------------------
 const BANISHMENT_DAMAGE = 14.0
-const BANISHMENT_PUSH = 20.0
+const BANISHMENT_PUSH = 25.0
 const BANISHMENT_RANGE = 4.0
 var parry_window = false
+const PARRY_WINDOW = 0.2
 var post_parry_immunity = 0.0
 const POST_PARRY_IMMUNITY = 2.5
 
@@ -43,7 +43,7 @@ const PROJECTILE_SCENE = preload("res://Scenes/projectile.tscn")
 const MAGIC_CIRCLE_TEXTURE = preload("res://Assets/Objects/magic circle prototype.png")
 
 # Q: Denouncement ---------------------------------
-const DENOUNCE_DURATION = 8.0
+const DENOUNCE_DURATION = 5.0
 const DENOUNCE_COOLDOWN = 16.0
 var denounce_cooldown = 0.0
 const DENOUNCE_SLOW = 0.4
@@ -102,6 +102,12 @@ func process_class(delta: float) -> void:
 	punishment_cooldown = max(punishment_cooldown - delta, 0.0)
 	denounce_cooldown = max(denounce_cooldown - delta, 0.0)
 	post_parry_immunity = max(post_parry_immunity - delta, 0.0)
+	if player.melee_timer > 0:
+		var hit_threshold = player.melee_attack_speed * (1.0 - 0.425)
+		var time_before_hit = player.melee_timer - hit_threshold
+		parry_window = time_before_hit > -0.15 and time_before_hit <= PARRY_WINDOW
+	else:
+		parry_window = false
 
 func _get_judgement_charge_rate() -> float:
 	return JUDGEMENT_CHARGE_RATE * (1.0 + JUDGEMENT_CHARGE_BONUS) if is_in_own_circle else JUDGEMENT_CHARGE_RATE
@@ -127,7 +133,7 @@ func melee_attack() -> void:
 		body.take_damage(BANISHMENT_DAMAGE)
 		var push_dir = (body.global_position - player.global_position).normalized()
 		push_dir.y = 0.0
-		body.set("impulse", Vector3.UP * 10.0)
+		body.set("impulse", Vector3.UP * 8.0)
 		body.set("knockback_velocity", push_dir * BANISHMENT_PUSH)
 		if not body.is_in_group("branded") and not first_unbranded:
 			first_unbranded = body
@@ -171,10 +177,10 @@ func ranged_attack() -> void:
 
 # Q: Denouncement ---------------------------------
 func skill() -> void:
-	if mana < 20.0 or denounce_cooldown > 0:
+	if mana < 30.0 or denounce_cooldown > 0:
 		return
 	denounce_cooldown = DENOUNCE_COOLDOWN
-	mana -= 20.0
+	mana -= 30.0
 	if denounce_circle and is_instance_valid(denounce_circle):
 		denounce_circle.queue_free()
 	denounce_circle = Area3D.new()
@@ -210,8 +216,9 @@ func _on_denounce_exited(body: Node) -> void:
 
 # E: Judgement ------------------------------------
 func ult() -> void:
-	if judgement_charges < JUDGEMENT_MAX_CHARGES:
+	if judgement_charges < JUDGEMENT_MAX_CHARGES or mana < 50.0:
 		return
+	mana -= 50.0
 	judgement_charges = 0.0
 	combat_timer = COMBAT_TIMEOUT
 	var aerial = Area3D.new()
@@ -276,7 +283,7 @@ func on_parry_success() -> void:
 	print("Parry successful — 2.5s immunity")
 
 func melee_windup() -> void:
-	parry_window = true
+	pass
 
 func melee_follow_through() -> void:
-	parry_window = false
+	pass

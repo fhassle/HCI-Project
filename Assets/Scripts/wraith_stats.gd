@@ -6,19 +6,18 @@ extends Node
 @onready var ult_label = get_parent().get_node("HUD/UltCooldown")
 
 # Wraith Stats (applied to Player on select) ------
-const CLASS_HP = 60.0
-const CLASS_MAX_HP = 60.0
+const CLASS_HP = 80.0
+const CLASS_MAX_HP = 80.0
 const CLASS_SPEED = 5.0
 const CLASS_SPRINT_SPEED = 8.0
 const CLASS_STAMINA = 120.0
 const CLASS_MAX_STAMINA = 120.0
-const CLASS_DASH_COST = 30.0
+const CLASS_DASH_COST = 25.0
 const CLASS_SPRINT_DRAIN = 12.0
 const CLASS_EXHAUSTED_SPEED = 3.5
 
 # Melee timing for player.gd -----------------------
-const MELEE_COOLDOWN_TIME = 0.5
-const MELEE_FORESWING = 0.2
+const MELEE_ATTACK_SPEED = 0.6
 
 # Focus Resource ----------------------------------
 var focus = 0.0
@@ -31,12 +30,12 @@ var is_focused = false
 var focused_timer = 0.0
 
 # LMB: Claw ---------------------------------------
-const CLAW_DAMAGE = 30.0
+const CLAW_DAMAGE = 25.0
 const CLAW_RANGE = 3.5
 const CLAW_ANGLE = 120.0
 
 # RMB: Knives -------------------------------------
-const KNIFE_DAMAGE = 15.0
+const KNIFE_DAMAGE = 12.0
 const KNIFE_RATE = 0.3
 var knife_timer = 0.0
 const PROJECTILE_SCENE = preload("res://Scenes/projectile.tscn")
@@ -279,7 +278,7 @@ func _on_knife_hit(_enemy: Node3D) -> void:
 
 # I-Frames ----------------------------------------
 func is_invincible() -> bool:
-	return player.is_dashing
+	return player.is_dashing or is_ravaging or is_assassinating
 
 
 # Stamina Overrides (called by player.gd) ----------

@@ -14,11 +14,10 @@ var sensitivity = 0.003
 @onready var active_class: Node = $WraithStats
 
 # Melee Attack Stats ------------------------------
-var melee_cooldown = 0.0
-var melee_cooldown_time = 0.6
-var melee_foreswing = 0.2
+var melee_attack_speed = 0.5
 var melee_timer = 0.0
-var is_attacking = false
+var has_hit_this_swing = false
+const HIT_TIMING = 0.425
 
 # Melee test animation ----------------------------
 const FIST_REST_POS = Vector3(0, 0, 0)
@@ -102,8 +101,8 @@ func _apply_class_stats():
 	speed = active_class.CLASS_SPEED
 	sprint_speed = active_class.CLASS_SPRINT_SPEED
 	exhausted_speed = active_class.CLASS_EXHAUSTED_SPEED
-	melee_cooldown_time = active_class.MELEE_COOLDOWN_TIME
-	melee_foreswing = active_class.MELEE_FORESWING
+	melee_attack_speed = active_class.MELEE_ATTACK_SPEED
+	class_label.text = "Class: " + active_class.name.replace("Stats", "")
 
 
 # Mouse Look --------------------------------------
@@ -157,6 +156,7 @@ func _physics_process(delta: float) -> void:
 		dash_hold_time = 0.0
 		dash_timer = DASH_DURATION
 		stamina -= dash_cost
+		set_collision_mask_value(4, false)
 		var input_dir_dash := Input.get_vector("left", "right", "up", "down")
 		var raw_dir = (transform.basis * Vector3(input_dir_dash.x, 0, input_dir_dash.y)).normalized()
 		if raw_dir != Vector3.ZERO:
@@ -170,12 +170,14 @@ func _physics_process(delta: float) -> void:
 		dash_timer -= delta
 		if dash_timer <= 0:
 			is_dashing = false
+			set_collision_mask_value(4, true)
 
 	if Input.is_action_pressed("dash") and not is_sprinting and not is_exhausted:
 		dash_hold_time += delta
 		if dash_hold_time >= DASH_HOLD_THRESHOLD:
 			is_sprinting = true
 			is_dashing = false
+			set_collision_mask_value(4, true)
 			dash_direction = -camera.global_transform.basis.z
 	
 	if is_sprinting and not Input.is_action_pressed("dash"):
@@ -255,20 +257,17 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, current_speed)
 
 # Melee timing ------------------------------------
-	if melee_cooldown > 0:
-		melee_cooldown -= delta
 	if melee_timer > 0:
-		melee_timer -= delta
-		if melee_timer <= 0 and is_attacking:
+		melee_timer = max(melee_timer - delta, 0.0)
+		if not has_hit_this_swing and melee_timer <= melee_attack_speed * (1.0 - HIT_TIMING):
+			has_hit_this_swing = true
 			active_class.melee_attack()
-			is_attacking = false
-			melee_cooldown = melee_cooldown_time
-			_fist_lunge()
+			_melee_hit_animation()
 			active_class.melee_follow_through()
-	if Input.is_action_just_pressed("meleeATK") and melee_cooldown <= 0 and not is_attacking:
-		is_attacking = true
-		melee_timer = melee_foreswing
-		_fist_windup()
+	if Input.is_action_just_pressed("meleeATK") and melee_timer <= 0:
+		melee_timer = melee_attack_speed
+		has_hit_this_swing = false
+		_melee_start_animation()
 		active_class.melee_windup()
 
 # Ranged Input ------------------------------------
@@ -289,17 +288,17 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-# Melee Windup Animation --------------------------
-func _fist_windup():
+# Melee Animation ----------------------------------
+func _melee_start_animation():
 	var tween = create_tween()
-	tween.tween_property(fist_holder, "position", FIST_WINDUP_POS, melee_foreswing)
+	var swing_duration = melee_attack_speed * HIT_TIMING
+	tween.tween_property(fist_holder, "position", FIST_WINDUP_POS, swing_duration * 0.3)
+	tween.tween_property(fist_holder, "position", FIST_LUNGE_POS, swing_duration * 0.7)
 
-
-# Melee Follow-through Animation ------------------
-func _fist_lunge():
+func _melee_hit_animation():
 	var tween = create_tween()
-	tween.tween_property(fist_holder, "position", FIST_LUNGE_POS, 0.1)
-	tween.tween_property(fist_holder, "position", FIST_REST_POS, 0.5)
+	var recover_duration = melee_attack_speed * (1.0 - HIT_TIMING)
+	tween.tween_property(fist_holder, "position", FIST_REST_POS, recover_duration)
 
 
 # DMG Taken ---------------------------------------

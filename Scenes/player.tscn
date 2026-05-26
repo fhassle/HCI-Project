@@ -62,9 +62,8 @@ script = ExtResource("5_x3wgy")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=498918574]
 
-[node name="StaminaLabel" type="Label" parent="HUD" unique_id=80267691]
-offset_left = -1.0
-offset_right = 225.0
+[node name="ClassLabel" type="Label" parent="HUD" unique_id=614323761]
+offset_right = 226.0
 offset_bottom = 24.0
 vertical_alignment = 1
 
@@ -74,25 +73,56 @@ offset_right = 226.0
 offset_bottom = 49.0
 vertical_alignment = 1
 
-[node name="FocusLabel" type="Label" parent="HUD" unique_id=375069202]
+[node name="StaminaLabel" type="Label" parent="HUD" unique_id=80267691]
+offset_left = -1.0
 offset_top = 50.0
-offset_right = 226.0
+offset_right = 225.0
 offset_bottom = 74.0
 vertical_alignment = 1
 
-[node name="SkillCooldown" type="Label" parent="HUD" unique_id=268002214]
+[node name="FocusLabel" type="Label" parent="HUD" unique_id=375069202]
 offset_top = 75.0
 offset_right = 226.0
 offset_bottom = 99.0
 vertical_alignment = 1
 
-[node name="UltCooldown" type="Label" parent="HUD" unique_id=737689517]
+[node name="SkillCooldown" type="Label" parent="HUD" unique_id=268002214]
 offset_top = 100.0
 offset_right = 226.0
 offset_bottom = 124.0
 vertical_alignment = 1
 
-[node name="ClassLabel" type="Label" parent="HUD" unique_id=273606760]
+[node name="UltCooldown" type="Label" parent="HUD" unique_id=737689517]
+offset_top = 125.0
+offset_right = 226.0
+offset_bottom = 149.0
+vertical_alignment = 1
+
+[node name="HPLabel2" type="Label" parent="HUD" unique_id=1043164370]
+offset_top = 25.0
+offset_right = 226.0
+offset_bottom = 49.0
+vertical_alignment = 1
+
+[node name="FocusLabel2" type="Label" parent="HUD" unique_id=1867010394]
+offset_top = 50.0
+offset_right = 226.0
+offset_bottom = 74.0
+vertical_alignment = 1
+
+[node name="SkillCooldown2" type="Label" parent="HUD" unique_id=57475139]
+offset_top = 75.0
+offset_right = 226.0
+offset_bottom = 99.0
+vertical_alignment = 1
+
+[node name="UltCooldown2" type="Label" parent="HUD" unique_id=1201163052]
+offset_top = 100.0
+offset_right = 226.0
+offset_bottom = 124.0
+vertical_alignment = 1
+
+[node name="ClassLabel2" type="Label" parent="HUD" unique_id=273606760]
 offset_top = 125.0
 offset_right = 226.0
 offset_bottom = 149.0

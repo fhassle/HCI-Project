@@ -23,6 +23,7 @@ func start_run():
 	current_floor = 0
 	is_running = true
 	_roll_condition()
+	print("=== LEVEL START ===")
 	go_to_next_floor()
 
 
@@ -35,6 +36,7 @@ func on_floor_cleared():
 	floor_cleared.emit(current_floor)
 	_roll_condition()
 	print("Floor ", current_floor, " cleared")
+	print("=== LEVEL COMPLETE ===")
 
 # Condition selection ------------------------------
 func _roll_condition():
