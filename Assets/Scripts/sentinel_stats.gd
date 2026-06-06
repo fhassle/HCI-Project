@@ -1,6 +1,8 @@
 extends Node
 
 # Sentinel Stats (applied to Player on select) ------
+const RIGHT_WEAPON = "IronDagger"
+const LEFT_WEAPON = "l_hard_rock"
 const CLASS_HP = 100.0
 const CLASS_MAX_HP = 100.0
 const CLASS_SPEED = 5.0
@@ -35,7 +37,7 @@ var post_parry_immunity = 0.0
 const POST_PARRY_IMMUNITY = 2.5
 
 # RMB: Punishment ---------------------------------
-const PUNISHMENT_DAMAGE = 30.0
+const PUNISHMENT_DAMAGE = 35.0
 const PUNISHMENT_SPEED = 30.0
 const PUNISHMENT_FIRE_RATE = 0.6
 var punishment_cooldown = 0.0

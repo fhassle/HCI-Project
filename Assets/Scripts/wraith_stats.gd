@@ -6,6 +6,8 @@ extends Node
 @onready var ult_label = get_parent().get_node("HUD/UltCooldown")
 
 # Wraith Stats (applied to Player on select) ------
+const RIGHT_WEAPON = "IronDagger"
+const LEFT_WEAPON = "l_hard_rock"
 const CLASS_HP = 80.0
 const CLASS_MAX_HP = 80.0
 const CLASS_SPEED = 5.0
@@ -36,7 +38,7 @@ const CLAW_ANGLE = 120.0
 
 # RMB: Knives -------------------------------------
 const KNIFE_DAMAGE = 12.0
-const KNIFE_RATE = 0.3
+const KNIFE_RATE = 0.5
 var knife_timer = 0.0
 const PROJECTILE_SCENE = preload("res://Scenes/projectile.tscn")
 

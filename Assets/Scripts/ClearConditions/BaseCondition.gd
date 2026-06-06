@@ -8,7 +8,7 @@ var player: CharacterBody3D = null
 func start_condition() -> void:
 	pass
 
-func process_condition(delta: float) -> void:
+func process_condition(_delta: float) -> void:
 	pass
 
 func is_complete() -> bool:

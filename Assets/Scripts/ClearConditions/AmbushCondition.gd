@@ -2,7 +2,7 @@ class_name AmbushCondition
 extends BaseCondition
 
 # Preloads -----------------------------------------
-const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
+const ENEMY_SCENE = preload("res://Scenes/Enemies/enemy_melee.tscn")
 
 # Wave config --------------------------------------
 var total_waves: int = 2
@@ -43,7 +43,7 @@ func _spawn_enemy() -> void:
 	var spawn: Node3D = spawn_points[randi() % spawn_points.size()]
 	var enemy = ENEMY_SCENE.instantiate()
 	get_tree().current_scene.add_child(enemy)
-	enemy.global_position = spawn.global_position
+	enemy.global_position = spawn.global_position + Vector3.UP
 	active_enemies.append(enemy)
 
 # Process loop -------------------------------------

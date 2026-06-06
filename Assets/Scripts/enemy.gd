@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal died
+
 # HP --------------------------------------
 var hp = 200.0
 const MAX_HP = 200.0
@@ -129,4 +131,5 @@ func take_damage(amount: float):
 	hp_label.text = str(round(hp))
 	print("Enemy HP: ", hp)
 	if hp <= 0:
+		died.emit()
 		queue_free()

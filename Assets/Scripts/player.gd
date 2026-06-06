@@ -6,6 +6,16 @@ var sensitivity = 0.003
 @onready var stamina_label = $HUD/StaminaLabel
 @onready var class_label = $HUD/ClassLabel
 
+# Audio ----(disabled)------------------------------
+#@onready var walk_footstep = $WalkSFX
+#@onready var sprint_footstep = $SprintSFX
+#@onready var dash_sfx = $DashSFX
+
+# Footstep SFX --(disabled)-------------------------
+#var footstep_timer = 0.0
+#const WALK_STEP_INTERVAL = 0
+#const SPRINT_STEP_INTERVAL = 0
+
 # Weapon Holder -----------------------------------
 @onready var weapon_holder = $Camera3D/RWeaponHolder
 @onready var fist_holder = $Camera3D/LWeaponHolder
@@ -23,6 +33,7 @@ const HIT_TIMING = 0.425
 const FIST_REST_POS = Vector3(0, 0, 0)
 const FIST_WINDUP_POS = Vector3(0, 0.1, 0.2)
 const FIST_LUNGE_POS = Vector3(0, -0.05, -0.2)
+var right_rest_pos = Vector3.ZERO
 
 # Dash to sprint ----------------------------------
 var is_dashing = false
@@ -45,8 +56,11 @@ var max_hp = 100.0
 @onready var hp_label = $HUD/HPLabel
 
 # I-Frames ----------------------------------------
-const IFRAME_DURATION = 1.0
+const IFRAME_DURATION = 0.4
 var iframe_timer = 0.0
+
+# Stun -------------------------------------------
+var stun_timer = 0.0
 
 # Stamina -----------------------------------------
 var stamina = 100.0
@@ -71,6 +85,7 @@ const DJUMP_VELOCITY = 6.8
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	right_rest_pos = weapon_holder.position
 	_apply_class_stats()
 
 
@@ -103,6 +118,14 @@ func _apply_class_stats():
 	exhausted_speed = active_class.CLASS_EXHAUSTED_SPEED
 	melee_attack_speed = active_class.MELEE_ATTACK_SPEED
 	class_label.text = "Class: " + active_class.name.replace("Stats", "")
+	_apply_weapons()
+
+
+func _apply_weapons():
+	for child in weapon_holder.get_children():
+		child.visible = child.name == active_class.RIGHT_WEAPON
+	for child in fist_holder.get_children():
+		child.visible = child.name == active_class.LEFT_WEAPON
 
 
 # Mouse Look --------------------------------------
@@ -133,6 +156,20 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta * 3.0
 
+# Stun --------------------------------------------
+	if stun_timer > 0:
+		stun_timer -= delta
+		if melee_timer > 0:
+			melee_timer = max(melee_timer - delta, 0.0)
+			if not has_hit_this_swing and melee_timer <= melee_attack_speed * (1.0 - HIT_TIMING):
+				has_hit_this_swing = true
+				active_class.melee_attack()
+				_melee_hit_animation()
+				active_class.melee_follow_through()
+		active_class.process_class(delta)
+		move_and_slide()
+		return
+
 # Jump --------------------------------------------
 	if is_on_floor():
 		jump_count = 0
@@ -155,7 +192,12 @@ func _physics_process(delta: float) -> void:
 		sprint_boost_active = false
 		dash_hold_time = 0.0
 		dash_timer = DASH_DURATION
+		if active_class.has_method("get_dash_duration"):
+			var custom = active_class.get_dash_duration()
+			if custom > 0:
+				dash_timer = custom
 		stamina -= dash_cost
+		# dash_sfx.play()
 		set_collision_mask_value(4, false)
 		var input_dir_dash := Input.get_vector("left", "right", "up", "down")
 		var raw_dir = (transform.basis * Vector3(input_dir_dash.x, 0, input_dir_dash.y)).normalized()
@@ -172,7 +214,10 @@ func _physics_process(delta: float) -> void:
 			is_dashing = false
 			set_collision_mask_value(4, true)
 
-	if Input.is_action_pressed("dash") and not is_sprinting and not is_exhausted:
+	var can_sprint = true
+	if active_class.has_method("can_sprint"):
+		can_sprint = active_class.can_sprint()
+	if Input.is_action_pressed("dash") and not is_sprinting and not is_exhausted and can_sprint:
 		dash_hold_time += delta
 		if dash_hold_time >= DASH_HOLD_THRESHOLD:
 			is_sprinting = true
@@ -290,15 +335,22 @@ func _physics_process(delta: float) -> void:
 
 # Melee Animation ----------------------------------
 func _melee_start_animation():
-	var tween = create_tween()
-	var swing_duration = melee_attack_speed * HIT_TIMING
-	tween.tween_property(fist_holder, "position", FIST_WINDUP_POS, swing_duration * 0.3)
-	tween.tween_property(fist_holder, "position", FIST_LUNGE_POS, swing_duration * 0.7)
+	var t = melee_attack_speed * HIT_TIMING
+	var tw = create_tween()
+	tw.tween_property(fist_holder, "position", FIST_WINDUP_POS, t * 0.3)
+	tw.tween_property(fist_holder, "position", FIST_LUNGE_POS, t * 0.7)
+
 
 func _melee_hit_animation():
-	var tween = create_tween()
-	var recover_duration = melee_attack_speed * (1.0 - HIT_TIMING)
-	tween.tween_property(fist_holder, "position", FIST_REST_POS, recover_duration)
+	var dur = melee_attack_speed * (1.0 - HIT_TIMING)
+	var tw = create_tween()
+	tw.tween_property(fist_holder, "position", FIST_REST_POS, dur)
+
+
+func ranged_animation(duration: float = 0.2):
+	var tw = create_tween()
+	tw.tween_property(weapon_holder, "position", FIST_LUNGE_POS, 0.1)
+	tw.tween_property(weapon_holder, "position", right_rest_pos, max(duration - 0.1, 0.05))
 
 
 # DMG Taken ---------------------------------------
@@ -310,7 +362,10 @@ func take_damage(amount: float):
 			active_class.on_parry_success()
 		return
 	iframe_timer = IFRAME_DURATION
-	hp -= amount
+	var dmg_mult = 1.0
+	if active_class.has_method("get_damage_taken_mult"):
+		dmg_mult = active_class.get_damage_taken_mult()
+	hp -= amount * dmg_mult
 	hp = clamp(hp, 0, max_hp)
 	print("Player HP: ", hp)
 	active_class.on_take_damage(amount)
