@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cp588maigp4mi"]
 
-[ext_resource type="Script" uid="uid://cnp87kqmd4jh8" path="res://Assets/Scripts/Enemies/enemy_melee.gd" id="1_hghv2"]
+[ext_resource type="Script" uid="uid://cgih8i2v14jm7" path="res://Assets/Scripts/Enemies/orc.gd" id="1_hghv2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0oxh4"]
 height = 1.5

@@ -14,6 +14,10 @@ var homing_target: Node3D = null
 @onready var sphere_collision = $SphereCollision
 
 func _ready():
+	if is_enemy_projectile:
+		collision_mask = 1
+	else:
+		collision_mask = 9
 	dagger_visual.visible = not is_enemy_projectile
 	sphere_visual.visible = is_enemy_projectile
 	dagger_collision.disabled = is_enemy_projectile
@@ -36,7 +40,10 @@ func launch(direction: Vector3):
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		body.take_damage(damage)
+		queue_free()
 	elif body.is_in_group("enemies") and not is_enemy_projectile:
 		body.take_damage(damage)
 		hit_enemy.emit(body)
-	queue_free()
+		queue_free()
+	elif not body.is_in_group("enemies"):
+		queue_free()

@@ -21,6 +21,9 @@ const ATTACK_COOLDOWN = 2.5
 # Stun (3rd hit) ------------------------------------
 const STUN_DURATION = 0.5
 
+# Interrupt ------------------------------------------
+const INTERRUPT_DURATION = 1.5
+
 # Prepare State -------------------------------------
 const PREPARE_DURATION = 4.0
 const PREPARE_PAUSE = 0.8
@@ -28,7 +31,7 @@ const PREPARE_WALK_MIN = 0.5
 const PREPARE_WALK_MAX = 1.5
 
 # Flee ----------------------------------------------
-const FLEE_DURATION = 2.0
+const FLEE_DURATION = 0.5
 
 # Idle Wander ----------------------------------------
 const IDLE_WALK_MIN = 1.0
@@ -53,7 +56,7 @@ var player = null
 @onready var hp_label = $HPLabel
 
 # State machine -------------------------------------
-enum State { IDLE, PREPARE, ATTACK }
+enum State { IDLE, PREPARE, ATTACK, INTERRUPTED }
 enum AttackPhase { CHASE, FLEE }
 enum PreparePhase { WALK, PAUSE }
 
@@ -144,7 +147,7 @@ func _physics_process(delta: float) -> void:
 				attack_phase = AttackPhase.CHASE
 
 		State.ATTACK:
-			var move_speed = MOVE_SPEED * speed_multiplier
+			var move_speed = MOVE_SPEED * speed_multiplier * 1.5
 			if is_in_group("branded"):
 				move_speed *= 0.85
 
@@ -162,8 +165,8 @@ func _physics_process(delta: float) -> void:
 			elif attack_phase == AttackPhase.FLEE:
 				var away = (global_position - player.global_position).normalized()
 				away.y = 0.0
-				velocity.x = away.x * move_speed
-				velocity.z = away.z * move_speed
+				velocity.x = away.x * move_speed * 1.5
+				velocity.z = away.z * move_speed * 1.5
 				state_timer -= delta
 				if state_timer <= 0:
 					if distance <= DETECTION_RANGE:
@@ -174,8 +177,23 @@ func _physics_process(delta: float) -> void:
 						state = State.IDLE
 						_idle_pick_wander()
 
+		State.INTERRUPTED:
+			velocity.x = 0.0
+			velocity.z = 0.0
+			state_timer -= delta
+			if state_timer <= 0:
+				if distance <= DETECTION_RANGE:
+					state = State.PREPARE
+					state_timer = PREPARE_DURATION
+					_prepare_enter()
+				else:
+					state = State.IDLE
+					_idle_pick_wander()
+
 	# Status label ----------------------------------
-	if speed_multiplier == 0.0:
+	if state == State.INTERRUPTED:
+		hp_label.text = "Interrupted"
+	elif speed_multiplier == 0.0:
 		hp_label.text = "Petrified"
 	else:
 		hp_label.text = str(round(hp))
@@ -249,6 +267,12 @@ func _separate_from_others() -> void:
 
 
 func take_damage(amount: float):
+	if state == State.ATTACK and hit_count % 3 == 2:
+		state = State.INTERRUPTED
+		state_timer = INTERRUPT_DURATION
+		velocity = Vector3.ZERO
+		hit_count += 1
+
 	if is_in_group("branded"):
 		amount *= 0.7
 	hp -= amount

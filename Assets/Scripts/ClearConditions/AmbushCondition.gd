@@ -2,7 +2,7 @@ class_name AmbushCondition
 extends BaseCondition
 
 # Preloads -----------------------------------------
-const ENEMY_SCENE = preload("res://Scenes/Enemies/enemy_melee.tscn")
+const ENEMY_SCENE = preload("res://Scenes/Enemies/orc.tscn")
 
 # Wave config --------------------------------------
 var total_waves: int = 2
