@@ -229,10 +229,14 @@ func melee_attack() -> void:
 		var result = space_state.intersect_ray(ray_query)
 		if result and result.collider != body:
 			continue
+		dmg *= player.buff_damage_mult
 		body.take_damage(dmg)
 		var push_dir = (body.global_position - player.global_position).normalized()
 		push_dir.y = 0.0
 		body.set("knockback_velocity", push_dir * push)
+		if player.buff_lifesteal_pct > 0:
+			var heal = dmg * player.buff_lifesteal_pct
+			player.hp = min(player.hp + heal, player.max_hp)
 		# Lifesteal during Roar buff
 		if lifesteal_timer > 0:
 			var heal = (player.max_hp - player.hp) * ROAR_LIFESTEAL_PCT

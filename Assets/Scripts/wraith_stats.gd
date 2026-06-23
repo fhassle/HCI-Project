@@ -175,7 +175,11 @@ func melee_attack() -> void:
 		var result = space_state.intersect_ray(ray_query)
 		if result and result.collider != body:
 			continue
-		body.take_damage(CLAW_DAMAGE)
+		var final_dmg = CLAW_DAMAGE * player.buff_damage_mult
+		body.take_damage(final_dmg)
+		if player.buff_lifesteal_pct > 0:
+			var heal = final_dmg * player.buff_lifesteal_pct
+			player.hp = min(player.hp + heal, player.max_hp)
 		_gain_focus()
 
 

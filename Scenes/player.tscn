@@ -173,7 +173,8 @@ Space || A - Jump 2x
 Left Click || LB - Melee
 Right Click || LB - Ranged
 Q || X - Skill
-E || B - Ult"
+E || B - Ult
+3/4/5 || - Items"
 horizontal_alignment = 2
 
 [node name="WalkSFX" type="AudioStreamPlayer3D" parent="." unique_id=1718529424]

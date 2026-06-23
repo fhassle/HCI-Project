@@ -133,11 +133,15 @@ func melee_attack() -> void:
 		if result and result.collider != body:
 			continue
 		combat_timer = COMBAT_TIMEOUT
-		body.take_damage(BANISHMENT_DAMAGE)
+		var final_dmg = BANISHMENT_DAMAGE * player.buff_damage_mult
+		body.take_damage(final_dmg)
 		var push_dir = (body.global_position - player.global_position).normalized()
 		push_dir.y = 0.0
 		body.set("impulse", Vector3.UP * BANISHMENT_KNOCKUP)
 		body.set("knockback_velocity", push_dir * BANISHMENT_PUSH)
+		if player.buff_lifesteal_pct > 0:
+			var heal = final_dmg * player.buff_lifesteal_pct
+			player.hp = min(player.hp + heal, player.max_hp)
 		if not body.is_in_group("branded") and not first_unbranded:
 			first_unbranded = body
 		if not first_branded:
