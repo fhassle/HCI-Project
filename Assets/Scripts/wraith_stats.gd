@@ -40,7 +40,7 @@ const CLAW_ANGLE = 120.0
 const KNIFE_DAMAGE = 12.0
 const KNIFE_RATE = 0.5
 var knife_timer = 0.0
-const PROJECTILE_SCENE = preload("res://Scenes/projectile.tscn")
+const PROJECTILE_SCENE = preload("res://Scenes/projectile_player.tscn")
 
 # Q: Ravage ---------------------------------------
 const RAVAGE_DAMAGE = 40.0

@@ -3,23 +3,31 @@ extends CharacterBody3D
 signal died
 
 # HP ------------------------------------------------
-var hp = 100.0
-const MAX_HP = 100.0
+var hp = 200.0
+const MAX_HP = 200.0
 const EXECUTE_THRESHOLD = 0.3
 
 # Detection / Aggro --------------------------------
 const DETECTION_RANGE = 15.0
 const AGGRO_LOSS_RANGE = 18.0
-const MOVE_SPEED = 3.0
+const MOVE_SPEED = 2.5
 
-# Melee Combat --------------------------------------
-const MELEE_DAMAGE = 20.0
+# Normal Swing --------------------------------------
+const MELEE_DAMAGE = 30.0
 const MELEE_KNOCKBACK = 30.0
 const MELEE_RANGE = 3.0
 const ATTACK_COOLDOWN = 2.5
 
-# Stun (3rd hit) ------------------------------------
-const STUN_DURATION = 0.5
+# Dash and Slam -------------------------------------
+const DASH_CHANCE = 0.3
+const DASH_CHARGE_TIME = 2.5
+const DASH_SPEED = 20.0
+const DASH_DURATION = 0.35
+const SLAM_DAMAGE = 40.0
+const SLAM_KNOCKUP = 15.0
+const SLAM_RANGE = 2.0
+const SLAM_KNOCKBACK = 30.0
+const SLAM_WINDUP = 1
 
 # Interrupt ------------------------------------------
 const INTERRUPT_DURATION = 1.5
@@ -29,9 +37,6 @@ const PREPARE_DURATION = 4.0
 const PREPARE_PAUSE = 0.8
 const PREPARE_WALK_MIN = 0.5
 const PREPARE_WALK_MAX = 1.5
-
-# Flee ----------------------------------------------
-const FLEE_DURATION = 0.5
 
 # Idle Wander ----------------------------------------
 const IDLE_WALK_MIN = 1.0
@@ -48,6 +53,7 @@ var knockback_velocity = Vector3.ZERO
 var impulse = Vector3.ZERO
 var branded_timer = 0.0
 var speed_multiplier = 1.0
+var dash_dir = Vector3.ZERO
 
 # References ----------------------------------------
 var player = null
@@ -56,8 +62,8 @@ var player = null
 @onready var hp_label = $HPLabel
 
 # State machine -------------------------------------
-enum State { IDLE, PREPARE, ATTACK, INTERRUPTED }
-enum AttackPhase { CHASE, FLEE }
+enum State { IDLE, PREPARE, ATTACK }
+enum AttackPhase { CHASE, DASH_CHARGE, DASHING, SLAMMING }
 enum PreparePhase { WALK, PAUSE }
 
 var state = State.IDLE
@@ -70,7 +76,6 @@ var idle_phase = PreparePhase.WALK
 var idle_walk_timer: float
 var idle_pause_timer: float
 var wander_dir = Vector3.ZERO
-var hit_count = 0
 
 
 func _ready():
@@ -91,7 +96,7 @@ func _physics_process(delta: float) -> void:
 
 	# Lose aggro if too far -------------------------
 	if distance > AGGRO_LOSS_RANGE:
-		if state != State.IDLE:
+		if state != State.IDLE and state != State.ATTACK:
 			state = State.IDLE
 			_idle_pick_wander()
 
@@ -101,9 +106,8 @@ func _physics_process(delta: float) -> void:
 		match state:
 			State.IDLE:
 				if distance <= DETECTION_RANGE:
-					state = State.PREPARE
-					state_timer = PREPARE_DURATION
-					_prepare_enter()
+					state = State.ATTACK
+					attack_phase = AttackPhase.CHASE
 				else:
 					match idle_phase:
 						PreparePhase.WALK:
@@ -146,57 +150,62 @@ func _physics_process(delta: float) -> void:
 				state_timer -= delta
 				if state_timer <= 0:
 					state = State.ATTACK
-					attack_phase = AttackPhase.CHASE
+					if randf() < DASH_CHANCE:
+						attack_phase = AttackPhase.DASH_CHARGE
+						state_timer = DASH_CHARGE_TIME
+						velocity = Vector3.ZERO
+					else:
+						attack_phase = AttackPhase.CHASE
 
 			State.ATTACK:
-				var move_speed = MOVE_SPEED * speed_multiplier * 1.5
-				if is_in_group("branded"):
-					move_speed *= 0.85
+				match attack_phase:
+					AttackPhase.CHASE:
+						var move_speed = MOVE_SPEED * speed_multiplier * 1.5
+						if is_in_group("branded"):
+							move_speed *= 0.85
+						nav_agent.target_position = player.global_position
+						var next_pos = nav_agent.get_next_path_position()
+						var move_dir = (next_pos - global_position).normalized()
+						velocity.x = move_dir.x * move_speed
+						velocity.z = move_dir.z * move_speed
+						if distance <= MELEE_RANGE:
+							_melee_attack()
+							_attack_finished(distance)
 
-				if attack_phase == AttackPhase.CHASE:
-					nav_agent.target_position = player.global_position
-					var next_pos = nav_agent.get_next_path_position()
-					var move_dir = (next_pos - global_position).normalized()
-					velocity.x = move_dir.x * move_speed
-					velocity.z = move_dir.z * move_speed
-					if distance <= MELEE_RANGE:
-						_melee_attack()
-						attack_phase = AttackPhase.FLEE
-						state_timer = FLEE_DURATION
+					AttackPhase.DASH_CHARGE:
+						velocity.x = 0.0
+						velocity.z = 0.0
+						state_timer -= delta
+						if state_timer <= 0:
+							dash_dir = (player.global_position - global_position).normalized()
+							dash_dir.y = 0.0
+							attack_phase = AttackPhase.DASHING
+							state_timer = DASH_DURATION
 
-				elif attack_phase == AttackPhase.FLEE:
-					var away = (global_position - player.global_position).normalized()
-					away.y = 0.0
-					velocity.x = away.x * move_speed * 1.5
-					velocity.z = away.z * move_speed * 1.5
-					state_timer -= delta
-					if state_timer <= 0:
-						if distance <= DETECTION_RANGE:
-							state = State.PREPARE
-							state_timer = PREPARE_DURATION
-							_prepare_enter()
-						else:
-							state = State.IDLE
-							_idle_pick_wander()
+					AttackPhase.DASHING:
+						velocity.x = dash_dir.x * DASH_SPEED
+						velocity.z = dash_dir.z * DASH_SPEED
+						state_timer -= delta
+						if state_timer <= 0:
+							velocity = Vector3.ZERO
+							attack_phase = AttackPhase.SLAMMING
+							state_timer = SLAM_WINDUP
 
-			State.INTERRUPTED:
-				velocity.x = 0.0
-				velocity.z = 0.0
-				state_timer -= delta
-				if state_timer <= 0:
-					if distance <= DETECTION_RANGE:
-						state = State.PREPARE
-						state_timer = PREPARE_DURATION
-						_prepare_enter()
-					else:
-						state = State.IDLE
-						_idle_pick_wander()
+					AttackPhase.SLAMMING:
+						velocity.x = 0.0
+						velocity.z = 0.0
+						state_timer -= delta
+						if state_timer <= 0:
+							_slam_attack()
+							_attack_finished(distance)
 
-	# Status label ----------------------------------
-	if state == State.INTERRUPTED:
-		hp_label.text = "Interrupted"
-	elif speed_multiplier == 0.0:
+		# Status label ----------------------------------
+	if speed_multiplier == 0.0:
 		hp_label.text = "Petrified"
+	elif state == State.ATTACK and attack_phase == AttackPhase.DASH_CHARGE:
+		hp_label.text = "Charging"
+	elif state == State.ATTACK and attack_phase == AttackPhase.SLAMMING:
+		hp_label.text = "Slamming"
 	else:
 		hp_label.text = str(round(hp))
 		if is_in_group("branded"):
@@ -219,16 +228,23 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
+func _attack_finished(distance: float) -> void:
+	if distance <= DETECTION_RANGE:
+		state = State.PREPARE
+		state_timer = PREPARE_DURATION
+		_prepare_enter()
+	else:
+		state = State.IDLE
+		_idle_pick_wander()
+
+
 func _pick_wander_dir(distance: float) -> Vector3:
-	var angle = randf_range(0, TAU)
-	var dir = Vector3(cos(angle), 0, sin(angle)).normalized()
-	var edge = DETECTION_RANGE * 0.7
-	if distance > edge:
-		var bias = (distance - edge) / (DETECTION_RANGE - edge)
-		var to_player = (player.global_position - global_position).normalized()
-		to_player.y = 0.0
-		dir = dir.lerp(to_player, bias).normalized()
-	return dir
+	var to_player = (player.global_position - global_position).normalized()
+	to_player.y = 0.0
+	if distance > DETECTION_RANGE * 0.5:
+		return to_player
+	else:
+		return -to_player
 
 
 func _idle_pick_wander() -> void:
@@ -245,14 +261,20 @@ func _prepare_enter() -> void:
 
 
 func _melee_attack() -> void:
-	hit_count += 1
 	player.take_damage(MELEE_DAMAGE)
+	var push_dir = (player.global_position - global_position).normalized()
+	push_dir.y = 0.0
+	player.knockback_velocity = push_dir * MELEE_KNOCKBACK
 
-	if hit_count % 3 == 0:
-		var push_dir = (player.global_position - global_position).normalized()
-		push_dir.y = 0.0
-		player.knockback_velocity = push_dir * MELEE_KNOCKBACK
-		player.stun_timer = STUN_DURATION
+
+func _slam_attack() -> void:
+	if global_position.distance_to(player.global_position) > SLAM_RANGE:
+		return
+	player.take_damage(SLAM_DAMAGE)
+	player.knock_up = SLAM_KNOCKUP
+	var push_dir = (player.global_position - global_position).normalized()
+	push_dir.y = 0.0
+	player.knockback_velocity = push_dir * SLAM_KNOCKBACK
 
 
 func _separate_from_others() -> void:
@@ -269,12 +291,6 @@ func _separate_from_others() -> void:
 
 
 func take_damage(amount: float):
-	if state == State.ATTACK and hit_count % 3 == 2:
-		state = State.INTERRUPTED
-		state_timer = INTERRUPT_DURATION
-		velocity = Vector3.ZERO
-		hit_count += 1
-
 	if is_in_group("branded"):
 		amount *= 0.7
 	hp -= amount

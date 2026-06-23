@@ -42,7 +42,7 @@ const PUNISHMENT_DAMAGE = 35.0
 const PUNISHMENT_SPEED = 30.0
 const PUNISHMENT_FIRE_RATE = 0.6
 var punishment_cooldown = 0.0
-const PROJECTILE_SCENE = preload("res://Scenes/projectile.tscn")
+const PROJECTILE_SCENE = preload("res://Scenes/projectile_player.tscn")
 const MAGIC_CIRCLE_TEXTURE = preload("res://Assets/Objects/magic circle prototype.png")
 
 # Q: Denouncement ---------------------------------

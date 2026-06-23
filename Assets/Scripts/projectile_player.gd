@@ -38,7 +38,9 @@ func launch(direction: Vector3):
 	linear_velocity = direction * speed
 
 func _on_body_entered(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("projectiles"):
+		pass
+	elif body.is_in_group("player"):
 		body.take_damage(damage)
 		queue_free()
 	elif body.is_in_group("enemies") and not is_enemy_projectile:

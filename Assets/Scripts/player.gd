@@ -56,7 +56,7 @@ var max_hp = 100.0
 @onready var hp_label = $HUD/HPLabel
 
 # I-Frames ----------------------------------------
-const IFRAME_DURATION = 0.4
+const IFRAME_DURATION = 1.5
 var iframe_timer = 0.0
 
 # Stun -------------------------------------------
