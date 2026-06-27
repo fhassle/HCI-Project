@@ -370,6 +370,26 @@ func _melee_indicator_create() -> void:
 	melee_indicator = _make_floor_circle(MELEE_RANGE)
 
 
+func knocked_airborne(duration: float, knockup_force: float) -> void:
+	speed_multiplier = 0.0
+	stunned_timer = duration
+	knockback_velocity = Vector3.ZERO
+	impulse = Vector3.UP * knockup_force
+
+func restore_from_airborne(orig_speed: float) -> void:
+	speed_multiplier = orig_speed
+	stunned_timer = 0.0
+
+func _become_corpse():
+	remove_from_group("enemies")
+	set_physics_process(false)
+	set_process(false)
+	collision_layer = 0
+	collision_mask = 0
+	hp_label.queue_free()
+	if has_node("NameLabel"):
+		$NameLabel.queue_free()
+
 func take_damage(amount: float):
 	if is_in_group("branded"):
 		amount *= 0.7
@@ -378,4 +398,4 @@ func take_damage(amount: float):
 	hp_label.text = str(round(hp))
 	if hp <= 0:
 		died.emit()
-		queue_free()
+		_become_corpse()

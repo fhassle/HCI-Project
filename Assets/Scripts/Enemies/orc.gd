@@ -9,13 +9,13 @@ const EXECUTE_THRESHOLD = 0.3
 
 # Detection / Aggro --------------------------------
 const DETECTION_RANGE = 15.0
-const AGGRO_LOSS_RANGE = 18.0
+const AGGRO_LOSS_RANGE = 30.0
 const MOVE_SPEED = 3.0
 
 # Melee Combat --------------------------------------
 const MELEE_DAMAGE = 20.0
 const MELEE_KNOCKBACK = 50.0
-const MELEE_RANGE = 2.5
+const MELEE_RANGE = 3.5
 const ATTACK_COOLDOWN = 2.5
 
 # Stun (3rd hit) ------------------------------------
@@ -28,10 +28,10 @@ const PREPARE_WALK_MIN = 0.5
 const PREPARE_WALK_MAX = 1.5
 
 # Chase --------------------------------------------
-const CHASE_TIMEOUT = 2.5
-const CHASE_READY_DELAY = 0.5
+const CHASE_TIMEOUT = 3.5
+const CHASE_READY_DELAY = 0.2
 const EMPOWERED_READY_DELAY = 0.8
-const CHASE_SPEED_MULT = 1.5
+const CHASE_SPEED_MULT = 1.6
 
 # Swing hit timing ------------------------------------
 const SWING_HIT_PERCENT = 0.5
@@ -364,8 +364,12 @@ func _pick_wander_dir(distance: float) -> Vector3:
 
 
 func _idle_pick_wander() -> void:
-	var angle = randf_range(0, TAU)
-	wander_dir = Vector3(cos(angle), 0, sin(angle)).normalized()
+	if player:
+		var dir = (player.global_position - global_position).normalized()
+		wander_dir = Vector3(dir.x, 0, dir.z).normalized()
+	else:
+		var angle = randf_range(0, TAU)
+		wander_dir = Vector3(cos(angle), 0, sin(angle)).normalized()
 	idle_walk_timer = randf_range(IDLE_WALK_MIN, IDLE_WALK_MAX)
 	idle_phase = PreparePhase.WALK
 
@@ -479,7 +483,11 @@ func _update_animation() -> void:
 	else:
 		match state:
 			State.IDLE:
-				anim = "idle"
+				match idle_phase:
+					PreparePhase.WALK:
+						anim = _dir_anim(wander_dir)
+					PreparePhase.PAUSE:
+						anim = "idle"
 			State.SURPRISED:
 				anim = "surprised"
 			State.PREPARE:
@@ -530,6 +538,16 @@ func _separate_from_others() -> void:
 		velocity += push * SEPARATION_FORCE
 
 
+func knocked_airborne(duration: float, knockup_force: float) -> void:
+	speed_multiplier = 0.0
+	stunned_timer = duration
+	knockback_velocity = Vector3.ZERO
+	impulse = Vector3.UP * knockup_force
+
+func restore_from_airborne(orig_speed: float) -> void:
+	speed_multiplier = orig_speed
+	stunned_timer = 0.0
+
 func take_damage(amount: float):
 	if is_in_group("branded"):
 		amount *= 0.7
@@ -548,3 +566,14 @@ func _clear_death_state():
 	state_timer = anim_player.get_animation("death").length
 	velocity = Vector3.ZERO
 	died.emit()
+	await get_tree().create_timer(state_timer).timeout
+	_become_corpse()
+
+func _become_corpse():
+	remove_from_group("enemies")
+	set_physics_process(false)
+	set_process(false)
+	collision_layer = 0
+	collision_mask = 0
+	hp_label.queue_free()
+	$NameLabel.queue_free()

@@ -410,6 +410,25 @@ func _separate_from_others() -> void:
 		velocity += push * SEPARATION_FORCE
 
 
+func knocked_airborne(duration: float, knockup_force: float) -> void:
+	speed_multiplier = 0.0
+	stunned_timer = duration
+	knockback_velocity = Vector3.ZERO
+	impulse = Vector3.UP * knockup_force
+
+func restore_from_airborne(orig_speed: float) -> void:
+	speed_multiplier = orig_speed
+	stunned_timer = 0.0
+
+func _become_corpse():
+	remove_from_group("enemies")
+	set_physics_process(false)
+	set_process(false)
+	collision_layer = 0
+	collision_mask = 0
+	hp_label.queue_free()
+	$NameLabel.queue_free()
+
 func take_damage(amount: float):
 	if is_in_group("branded"):
 		amount *= 0.7
@@ -426,4 +445,4 @@ func take_damage(amount: float):
 	if hp <= 0:
 		_hide_aoe_marker()
 		died.emit()
-		queue_free()
+		_become_corpse()
